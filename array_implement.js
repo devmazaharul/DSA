@@ -86,4 +86,51 @@ const newArr = arr.myMap((item) => {
     return item;
 });
 
-console.log(arr.sort());
+Array.prototype.myFill = function (val, start = 0, end = this.length) {
+    for (let i = start; i < end; i++) {
+        this[i] = val;
+    }
+    return this;
+};
+
+Array.prototype.myEvery = function (cb) {
+    for (let i = 0; i < this.length; i++) {
+        return cb(this[i]);
+    }
+};
+
+Array.prototype.myReduce = function (cb, init) {
+    let acc = init;
+    let firstIndex = 0;
+    if (!init) {
+        acc = this[0];
+        firstIndex = 1;
+    }
+
+    for (let i = this.findIndex; i < this.length; i++) {
+        acc = cb(acc, this[i], i, this);
+    }
+
+    return acc;
+};
+
+
+Array.prototype.myEvery=function(cb){
+for (let i = 0; i < this.length; i++) {
+        if(!cb(this[i],i,this)){
+            return false
+        }
+
+}
+    return true
+}
+Array.prototype.mySome=function(cb){
+        for (let i = 0; i < this.length; i++) {
+           if(cb(this[i],i,this)){
+            return true
+           }
+            
+        }
+        return false
+}
+
