@@ -93,4 +93,146 @@ const characterCount = (str = '', result = {}) => {
     return characterCount(str.slice(1), result);
 };
 
+//Print all subarrays of an array recursively.
+
+const subarrays = (arr = [], start = 0, result = []) => {
+    if (start == arr.length) return result;
+
+    for (let end = start; end < arr.length; end++) {
+        result.push(arr.slice(start, end + 1));
+    }
+    return subarrays(arr.slice(arr), start + 1, result);
+};
+
+const subArr = [1, 2, 3];
+
+const subString = (str = '', start = 0, result = []) => {
+    if (str.length == start) return result;
+    for (let i = start; i < str.length; i++) {
+        const sliceNew = str.slice(start, i + 1);
+        if (!result.includes(sliceNew)) {
+            result.push(sliceNew);
+        }
+    }
+    return subString(str, start + 1, result);
+};
+
+// Find the sum of all subsets of a given array.
+const subsetsSum = (arr = [], start = 0, result = []) => {
+    if (arr.length == start) return result;
+
+    for (let end = start; end < arr.length; end++) {
+        const sliceArr = arr.slice(start, end + 1);
+        const sum = sliceArr.reduce((acc, curr) => acc + curr, 0);
+        const makeObj = {
+            items: sliceArr,
+            sum: sum,
+        };
+        result.push(makeObj);
+    }
+    return subsetsSum(arr, start + 1, result);
+};
+
+// posible combination with recurtation and backtraking
+const posibleCombination = (arr = []) => {};
+
+const target = 17;
+
+
+// two sum with recurtion way
+const twoSum = (arr = [], target, result = [], start = 0) => {
+    for (let end = start; end < arr.length; end++) {
+        if (arr[start] + arr[end + 1] === target) {
+            result.push(start, end + 1);
+            return result;
+        }
+    }
+    return twoSum(arr, target, result, start + 1);
+};
+
+function toSum(arr, target) {
+    const res = {};
+
+    for (let i = 0; i < arr.length; i++) {
+        const isDef = target - arr[i];
+        if (res[isDef] !== undefined) {
+            return [res[isDef], i];
+        }
+        res[arr[i]] = i;
+    }
+
+    return null;
+}
+
+const tosumarr = [2, 7, 11, 15];
+
+const binaryArr = [1, 2, 3, 4, 5, 6, 7, 8];
+// binrary search with recurtion
+function binarySearch(arr = [], target, start = 0, end = arr.length) {
+    //base case
+    if (start <= end) {
+        let mid = Math.floor((start + end) / 2);
+
+        if (arr[mid] === target) return mid;
+        if (target > arr[mid]) {
+            return binarySearch(arr, target, mid + 1, end);
+        } else {
+            return binarySearch(arr, target, start, mid - 1);
+        }
+    }
+    return -1;
+}
+
+
+// binrary search with itarative way
+function binarySearch(arr, target) {
+    let start = 0,
+        end = arr.length - 1;
+
+    while (start <= end) {
+        let mid = Math.floor((start + end) / 2);
+        console.log(`start=${start}, end=${end}, mid=${mid}, arr[mid]=${arr[mid]}`);
+
+        if (arr[mid] === target) return mid;
+        else if (arr[mid] < target) start = mid + 1; // ডান দিকে খোঁজা
+        else end = mid - 1; // বাম দিকে খোঁজা
+    }
+
+    return -1;
+}
+
+const nums = [1, 3, 5, 6, 7, 9, 10, 11, 12, 54];
+
+// find minimum element with itarative approch
+function findMin(arr = []) {
+    if (arr.lengt == 0) return [];
+    let smallest = -Infinity;
+    for (let i = 0; i < arr.length; i++) {
+        smallest = Math.max(smallest, arr[i]);
+    }
+    return smallest;
+}
+
+//reverse array with itarative way
+
+function reverseArr(arr = []) {
+    let start = 0;
+    let end = arr.length - 1;
+    while (start < end) {
+        [arr[start], arr[end]] = [arr[end], arr[start]];
+        start++;
+        end--;
+    }
+    return arr;
+}
+
+
+//revese array with recurtion
+function reverseArrWithRecurtion(arr = [], start = 0, end = arr.length - 1) {
+    if (start < end) {
+        [arr[start], arr[end]] = [arr[end], arr[start]];
+        return reverseArrWithRecurtion(arr, start + 1, end - 1);
+    }
+    return arr;
+}
 
