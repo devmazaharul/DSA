@@ -101,7 +101,7 @@ const subarrays = (arr = [], start = 0, result = []) => {
     for (let end = start; end < arr.length; end++) {
         result.push(arr.slice(start, end + 1));
     }
-    return subarrays(arr.slice(arr), start + 1, result);
+    return subarrays(arr, start + 1, result);
 };
 
 const subArr = [1, 2, 3];
@@ -141,6 +141,7 @@ const target = 17;
 
 // two sum with recurtion way
 const twoSum = (arr = [], target, result = [], start = 0) => {
+    if(arr.length==start) return null
     for (let end = start; end < arr.length; end++) {
         if (arr[start] + arr[end + 1] === target) {
             result.push(start, end + 1);
@@ -202,6 +203,7 @@ function binarySearch(arr, target) {
 }
 
 const nums = [1, 3, 5, 6, 7, 9, 10, 11, 12, 54];
+
 
 // find minimum element with itarative approch
 function findMin(arr = []) {
