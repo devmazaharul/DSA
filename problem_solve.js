@@ -297,3 +297,137 @@ function binarySearch(arr = [], target, start = 0, end = arr.length - 1) {
         return binarySearch(arr, target, start, mid - 1);
     }
 }
+
+function sumN(n) {
+    let sum = 0;
+    for (let i = 0; i < n; i++) {
+        sum += i + 1;
+    }
+    return sum;
+}
+function sumNA(n) {
+    return (n * (n + 1)) / 2;
+}
+
+function Consecutive(arr = []) {
+    let res = arr[0];
+    for (let i = 1; i < arr.length; i++) {
+        res = Math.min(res, arr[i]);
+    }
+
+    const result = [];
+
+    if (arr.includes(res + 1)) {
+        result.push(res + 1);
+    }
+    return result;
+}
+
+function call(n) {
+    if (n == 0) return;
+    console.log(n);
+    call(n - 1);
+    call(n - 1);
+    return;
+}
+
+const pairsumarr = [2, 3, 4, 5, 7];
+
+function pairSum(arr = [], target) {
+    const result = [];
+    for (let i = 0; i < arr.length; i++) {
+        for (let j = i; j < arr.length; j++) {
+            if (arr[i] + arr[j] == target) {
+                result.push(arr[i], arr[j]);
+                return result;
+            }
+        }
+    }
+    return -1;
+}
+
+
+// array must be sorted
+function optimizeSolution(arr = [], target, start = 0, end = arr.length - 1, result = []) {
+    if (start > end) return -1;
+    if (arr[start] + arr[end] === target) {
+        result.push(start, end);
+        return result;
+    } else if (target > arr[start] + arr[end]) {
+        return optimizeSolution(arr, target, start + 1, end, result);
+    } else {
+        return optimizeSolution(arr, target, start, end - 1, result);
+    }
+}
+
+const majorityElementArr = [1, 2, 1, 11, 1, 20, 20, 20, 20];
+// simple soltion
+const majorityElementNew = (arr = []) => {
+    const obj = {};
+
+    for (let i = 0; i < arr.length; i++) {
+        obj[arr[i]] = (obj[arr[i]] || 0) + 1;
+    }
+
+    for (let key in obj) {
+        const major = Math.floor(arr.length / 2);
+        if (obj[key] >= major) {
+            return key;
+        }
+    }
+
+    return -1;
+};
+
+const majorityElementNew1 = (arr = []) => {
+    let count = 1;
+    const major = Math.floor(arr.length / 2);
+    for (let i = 0; i < arr.length; i++) {
+        for (let j = 0; j < arr.length; j++) {
+            if (arr[i] == arr[j]) {
+                count++;
+            }
+        }
+
+        if (count >= major) {
+            return arr[i];
+        } else {
+            count = 0;
+        }
+    }
+};
+
+//this only work in sorted array
+const majorityElementNew3 = (arr = []) => {
+    let count = 1;
+    let current = arr[0];
+    const major = Math.floor(arr.length / 2);
+    for (let i = 1; i < arr.length; i++) {
+        if (arr[i] !== current) {
+            current = arr[i];
+            count = 1;
+        } else {
+            count++;
+            if (count >= major) {
+                return current;
+            }
+        }
+    }
+    return -1;
+};
+
+//most voting algorithm
+const majorityElementNew2 = (arr = []) => {
+    let count = 0;
+    let current = null;
+
+    for (let key in arr) {
+        if (count == 0) {
+            current = arr[key];
+        }
+        if (current == arr[key]) count++;
+        else count--;
+    }
+    return current;
+};
+
