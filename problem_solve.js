@@ -323,14 +323,6 @@ function Consecutive(arr = []) {
     return result;
 }
 
-function call(n) {
-    if (n == 0) return;
-    console.log(n);
-    call(n - 1);
-    call(n - 1);
-    return;
-}
-
 const pairsumarr = [2, 3, 4, 5, 7];
 
 function pairSum(arr = [], target) {
@@ -345,7 +337,6 @@ function pairSum(arr = [], target) {
     }
     return -1;
 }
-
 
 // array must be sorted
 function optimizeSolution(arr = [], target, start = 0, end = arr.length - 1, result = []) {
@@ -430,4 +421,292 @@ const majorityElementNew2 = (arr = []) => {
     }
     return current;
 };
+
+function maxSumarr(arr = []) {
+    let maxsum = 0;
+    for (let i = 0; i < arr.length; i++) {
+        let currentSum = 0;
+        for (let j = i; j < arr.length; j++) {
+            currentSum += arr[j];
+        }
+        maxsum = Math.max(maxsum, currentSum);
+    }
+    return maxsum;
+}
+
+//itarative way to generate OTP
+
+function otpItarative(len) {
+    let otp = '';
+    for (let i = 0; i < len; i++) {
+        otp += Math.floor(Math.random() * 10);
+    }
+    return otp;
+}
+
+function otpRecurtion(len) {
+    if (len == 0) return '';
+    return Math.floor(Math.random() * 10) + otpRecurtion(len - 1);
+}
+
+const maxProfit = (arr = []) => {
+    let maxRrof = 0;
+    let todaySell = arr[0];
+    for (let i = 0; i < arr.length; i++) {
+        const prof = todaySell - arr[0];
+
+        maxRrof = Math.max(prof, maxRrof);
+    }
+    return maxRrof;
+};
+
+const powCal = (n, pow) => {
+    let ans = 1;
+    for (let i = 0; i < pow; i++) {
+        ans = n * ans;
+    }
+    return ans;
+};
+
+function maxWather(arr = []) {
+    let ans = 0;
+    let height = 0;
+    let width = 0;
+    for (let i = 0; i < arr.length; i++) {
+        for (let j = i + 1; j < arr.length; j++) {
+            height = Math.min(arr[j], arr[i]);
+            width = j - i;
+            const multipla = height * width;
+            ans = Math.max(ans, multipla);
+        }
+    }
+
+    return ans;
+}
+
+function maxWatherRecurtion(arr = [], start = 0, end = arr.length - 1) {
+    if (start >= end) return 0;
+    const height = Math.min(arr[start], arr[end]);
+    const width = end - start;
+    const maxArea = height * width;
+    return Math.max(
+        maxArea,
+        maxWatherRecurtion(arr, start + 1, end),
+        maxWatherRecurtion(arr, start, end - 1),
+    );
+}
+
+function maxWatherWhile(arr = []) {
+    let maxwater = 0;
+    let left = 0;
+    let right = arr.length - 1;
+
+    while (right > left) {
+        const height = Math.min(arr[left], arr[right]);
+        const width = right - left;
+        const base = height * width;
+        maxwater = Math.max(maxwater, base);
+        if (arr[left] < arr[right]) {
+            left++;
+        } else {
+            right--;
+        }
+    }
+    return maxwater;
+}
+
+function minWaterWhile(arr = []) {
+    if (arr.length < 2) return 0; // কমপক্ষে ২টা height দরকার
+
+    let left = 0;
+    let right = arr.length - 1;
+    let minWater = Infinity; // শুরুতে অনেক বড় মান
+
+    while (left < right) {
+        const height = Math.min(arr[left], arr[right]);
+        const width = right - left;
+        const area = height * width;
+
+        // সবচেয়ে ছোট area রাখো
+        minWater = Math.min(minWater, area);
+
+        // ছোট height দিকটা সরাও
+        if (arr[left] < arr[right]) {
+            left++;
+        } else {
+            right--;
+        }
+    }
+
+    return minWater;
+}
+
+var maxArea = function (heights) {
+    let left = 0;
+    let right = heights.length - 1;
+    let maxArea = 0;
+
+    while (left < right) {
+        const leftHeight = heights[left];
+        const rightHeight = heights[right];
+        const width = right - left;
+        const height = leftHeight < rightHeight ? leftHeight : rightHeight;
+        const area = height * width;
+
+        if (area > maxArea) maxArea = area;
+
+        // move smaller height pointer inward
+        if (leftHeight < rightHeight) {
+            left++;
+            // 🔥 skip all heights smaller than current leftHeight (micro-optimization)
+            while (left < right && heights[left] <= leftHeight) left++;
+        } else {
+            right--;
+            // 🔥 skip all heights smaller than current rightHeight (micro-optimization)
+            while (left < right && heights[right] <= rightHeight) right--;
+        }
+    }
+
+    return maxArea;
+};
+
+const prices = [7, 5, 3, 3, 6, 4];
+function minWater(arr = []) {
+    let minArea = Infinity;
+
+    for (let i = 0; i < arr.length; i++) {
+        for (let j = i + 1; j < arr.length; j++) {
+            const height = Math.min(arr[i], arr[j]);
+            const width = j - i;
+            const area = height * width;
+
+            if (area < minArea) {
+                minArea = area;
+            }
+        }
+    }
+
+    return minArea;
+}
+
+// Example
+
+function productFind(arr = []) {
+    const result = [];
+
+    for (let i = 0; i < arr.length; i++) {
+        let multi = 1;
+        for (let j = 0; j < arr.length; j++) {
+            const m = i == j ? 1 : arr[j];
+            multi = multi * m;
+        }
+        result.push(multi);
+    }
+
+    return result;
+}
+
+const productArr = [1, 2, 3, 4];
+// anumate text
+async function formatText(text = '', n = 2) {
+    if (n == 0) return;
+    for (let i = 0; i < text.length; i++) {
+        process.stdout.write(text[i]);
+        await new Promise((res) => setTimeout(res, 100));
+    }
+}
+function productExceptSelf(nums) {
+    const n = nums.length;
+    const ans = new Array(n).fill(1);
+
+    // prefix multiply (left side)
+    for (let i = 1; i < n; i++) {
+        ans[i] = ans[i - 1] * nums[i - 1];
+    }
+
+    // suffix multiply (right side)
+    let suffix = 1;
+    for (let i = n - 1; i >= 0; i--) {
+        ans[i] *= suffix;
+        suffix *= nums[i];
+    }
+
+    return ans;
+}
+const nums = [1, 1, 2, 2, 2, 3, 3, 33];
+
+function removeDuplicate(nums) {
+    let k = 0;
+
+    for (let i = 1; i < nums.length; i++) {
+        if (nums[i] !== nums[k]) {
+            k++;
+            nums[k] = nums[i];
+        }
+    }
+
+    return k + 1;
+}
+
+var removeDuplicates = function (nums) {
+    if (nums.length === 0) return 0;
+
+    let i = 0; // last unique index
+    for (let j = 1; j < nums.length; j++) {
+        if (nums[j] !== nums[i]) {
+            i++;
+            nums[i] = nums[j];
+        }
+    }
+
+    return i + 1; // number of unique elements
+};
+
+const RotatedSearch = (arr = [], target) => {
+    let start = 0;
+    let end = arr.length - 1;
+
+    while (start <= end) {
+        let mid = Math.floor((end + start) / 2);
+        if (arr[mid] == target) return mid;
+
+        //left side
+        if (arr[start] <= arr[mid]) {
+            if (arr[mid] >= target && arr[start] <= target) {
+                end = mid - 1;
+            } else {
+                start = mid + 1;
+            }
+        } else {
+            //right half
+            if (arr[mid] <= target && arr[end] >= target) {
+                start = mid + 1;
+            } else {
+                end = mid - 1;
+            }
+        }
+    }
+
+    return -1;
+};
+
+const peakIndex = (arr = []) => {
+    let start = 0;
+    let end = arr.length - 1;
+    while (start <= end) {
+        let mid = Math.floor(start + (end - start) / 2);
+        if (arr[mid] > arr[mid - 1] && arr[mid] > arr[mid + 1]) {
+            return arr[mid];
+        }
+        if (arr[mid + 1] > arr[mid]) {
+            start = mid + 1;
+        } else {
+            end = mid - 1;
+        }
+    }
+    return -1
+};
+
+const peakArr = [1, 2, 3, 4, 8,2, 1];
+
 
