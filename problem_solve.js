@@ -615,7 +615,7 @@ async function formatText(text = '', n = 2) {
         await new Promise((res) => setTimeout(res, 100));
     }
 }
-function productExceptSelf(nums) {
+function mulitp(nums) {
     const n = nums.length;
     const ans = new Array(n).fill(1);
 
@@ -704,9 +704,84 @@ const peakIndex = (arr = []) => {
             end = mid - 1;
         }
     }
-    return -1
+    return -1;
 };
 
-const peakArr = [1, 2, 3, 4, 8,2, 1];
+function singleNumber(arr = []) {
+    const obj = {};
 
+    for (let i = 0; i < arr.length; i++) {
+        obj[arr[i]] = (obj[arr[i]] || 0) + 1;
+    }
+    for (let key in obj) {
+        if (obj[key] == 1) {
+            return obj[key];
+        }
+    }
+}
 
+function singleNumberWithBinary(arr = []) {
+    let start = 0;
+    let end = arr.length - 1;
+    while (start < end) {
+        let mid = Math.floor(start + (end - start) / 2);
+        if (mid % 2 === 1) mid--;
+        if (arr[mid] == arr[mid + 1]) {
+            start = mid + 2;
+        } else {
+            end = mid;
+        }
+    }
+    return nums[start];
+}
+
+function singleNumberWithBinaryAnothet(arr = []) {
+    let start = 0,
+        end = arr.length - 1;
+    while (start <= end) {
+        let mid = Math.floor(start + (end - start) / 2);
+        if (arr[mid] !== arr[mid + 1] && arr[mid] !== arr[mid - 1]) return arr[mid];
+        if (mid % 2 == 0) {
+            //handle even case
+            if (arr[mid] == arr[mid - 1]) {
+                end = mid - 1;
+            } else {
+                start = mid + 1;
+            }
+        } else {
+            //handle odd case
+            if (arr[mid] == arr[mid - 1]) {
+                start = mid + 1;
+            } else {
+                end = mid - 1;
+            }
+        }
+    }
+    return -1;
+}
+
+const peakArr = [1, 1, 2, 2, 3, 3, 4, 4, 8];
+
+const bookAlocate = (arr = [], k) => {
+    const n = arr.length - 1;
+    let resultarr = [];
+    let sumRight = 0;
+    for (let i = n; i > 0; i--) {
+        let sum = 0;
+
+        for (let j = 0; j < i; j++) {
+            sum = sum + arr[j];
+        }
+        sumRight += arr[i];
+        resultarr.push(Math.max(sumRight, sum));
+    }
+
+    let min = Infinity;
+    for (let val of resultarr) {
+        min = Math.min(min, val);
+    }
+    return min;
+};
+
+const bookAarr = [10, 20, 30, 40];
+const studnet = 2;
