@@ -1,9 +1,9 @@
 //Print numbers from 1 to N recursively.
-const printNumberOnetoN = (n) => {
+const printNumberOnetoN = (n,res=0) => {
     if (res == n) return;
     res++;
     console.log(res);
-    printNumberOnetoN(n, res);
+    printNumberOnetoN(n, res+1);
 };
 // Print numbers from **N to 1** recursively.
 const printNumberNtoOne = (n) => {

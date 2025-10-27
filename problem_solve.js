@@ -151,7 +151,6 @@ function removeDuplicateValueRecursive(arr = [], start = 0, result = []) {
 
 function removeDuplicateValue(arr = []) {
     const obj = {};
-    const result = [];
     for (let num of arr) {
         obj[num] = (obj[num] || 0) + 1;
     }
@@ -202,7 +201,7 @@ function majorityElement(arr = []) {
 }
 
 async function delayConsole() {
-    let str = 'Hellow , I am mazaharul islam i am a software enginnerr';
+    const str = 'Hello, I am Mazaharul Islam — a Software Developer.';
 
     for (let i = 0; i < str.length; i++) {
         process.stdout.write(str[i]);
@@ -785,3 +784,92 @@ const bookAlocate = (arr = [], k) => {
 
 const bookAarr = [10, 20, 30, 40];
 const studnet = 2;
+
+const longestSubstring = (str = '') => {
+    let concat = [];
+    for (let i = 0; i < str.length; i++) {
+        for (let j = i; j < n; j++) {
+            for (let k = j; k < i; k++) {}
+        }
+    }
+    console.log(concat);
+};
+
+const printNumberOnetoN = (n, res = 1) => {
+    console.log(res);
+    if (res == n) return;
+
+    printNumberOnetoN(n, res + 1);
+};
+
+function reverseString(str = '', ans = '') {
+    if (str.length == 0) return ans;
+    const res = reverseString(str.slice(1)) + str.charAt(0);
+    ans += res;
+    return ans;
+}
+
+function sumOfArray(arr = [], result = 0, left = 0, right = arr.length - 1) {
+    if (left <= right) {
+        result = result + (arr[left] + (left === right ? 0 : arr[right]));
+        return sumOfArray(arr, result, left + 1, right - 1);
+    }
+
+    return result;
+}
+
+// two pointer
+function isPlainDrome(str = '', left = 0, right = str.length - 1) {
+    if (left > right) return true;
+    if (str[left] !== str[right]) return false;
+    return isPlainDrome(str, left + 1, right - 1);
+}
+
+// generate aschii code with recurtion
+function generateAsciiCode(str = '', result = []) {
+    if (str.length == 0) return result;
+    result.push(str[0].charCodeAt());
+    return nameToAscii(str.slice(1), result);
+}
+
+//time o(n) and space o(1)
+const nonrepeating = (str) => {
+    const obj = {};
+
+    for (let i = 0; i < str.length; i++) {
+        obj[str[i]] = (obj[str[i]] || 0) + 1;
+    }
+
+    for (let key in obj) {
+        if (obj[key] == 1) {
+            return key;
+        }
+    }
+    return -1;
+};
+
+const nonrepeatingWithbit = (str = '') => {
+    const result = [];
+    for (let i = 0; i < str.length; i++) {
+        const code = str[i].charCodeAt();
+        if (result.includes(code) == false) {
+            result.push(code);
+        }
+    }
+    console.log(result);
+
+    return String.fromCodePoint(result[0]);
+};
+
+const nonrepeatinAnotherway = (str = '') => {
+    while (str.length > 0) {
+        let res = str[0];
+        let rest = str.slice(1);
+        if (!rest.includes(res)) {
+            return res;
+        }
+        str = rest;
+    }
+    return -1;
+};
+
