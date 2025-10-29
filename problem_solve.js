@@ -873,3 +873,43 @@ const nonrepeatinAnotherway = (str = '') => {
     return -1;
 };
 
+const isValid=(arr,k,maxAllow)=>{
+    let student=1
+    let page=0
+
+    for (let i = 0; i < arr.length; i++) {
+       if(arr[i]>maxAllow){
+        return false
+       }
+       if(arr[i]+page<=maxAllow){
+        page+=arr[i] 
+       }
+       else{
+        student++
+        page=arr[i]
+       }
+        
+    }
+    return student > k ? false : true
+
+}
+
+
+function boookalocaation(arr=[],k){
+    let start=0
+    let ans=0
+    let end=arr.reduce((acc,curr)=>curr+acc)
+    if(k>arr.length) return false
+    
+    while(start<=end){
+        let mid=Math.floor(start+(end-start)/2)
+        if(isValid(arr,k,mid)){
+            ans=mid
+            end=mid-1
+        }else{
+            start=mid+1
+        }
+    }
+    return ans
+}
+
