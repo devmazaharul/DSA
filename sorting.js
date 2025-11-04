@@ -184,6 +184,7 @@ const inpurArr = [
 ];
 const word = 'ABCCED';
 
+// gues sorted index
 const searchInsert = (arr = [], target) => {
     let start = 0,
         end = arr.length - 1;
@@ -202,4 +203,217 @@ const searchInsert = (arr = [], target) => {
 
 let nums = [1, 3, 5, 7],
     target = 6;
+
+const insertionSort = (arr = []) => {
+    for (let i = 1; i < arr.length; i++) {
+        let current = arr[i];
+        let prev = i - 1;
+        while (prev >= 0 && arr[prev] > current) {
+            arr[prev + 1] = arr[prev];
+            prev--;
+        }
+        arr[prev + 1] = current;
+    }
+    return arr;
+};
+
+const sortWithColor = (arr = []) => {
+    let arr0 = 0;
+    let arr1 = 0;
+    let arr2 = 0;
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i] == 0) arr0++;
+        else if (arr[i] === 1) arr1++;
+        else arr2++;
+    }
+
+    let currntIdx = 0;
+
+    for (let i = 0; i < arr0; i++) {
+        arr[currntIdx++] = 0;
+    }
+
+    for (let i = 0; i < arr1; i++) {
+        arr[currntIdx++] = 1;
+    }
+
+    for (let i = 0; i < arr2; i++) {
+        arr[currntIdx++] = 2;
+    }
+
+    return arr;
+};
+const sortWithColorAnother = (arr = []) => {
+    let arr0 = 0;
+    let arr1 = 0;
+    let arr2 = 0;
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i] == 0) arr0++;
+        else if (arr[i] === 1) arr1++;
+        else arr2++;
+    }
+
+    let currntIdx = 0;
+
+    for (let i = 0; i < arr.length; i++) {
+        if (currntIdx < arr0) {
+            arr[currntIdx++] = 0;
+        } else if (currntIdx < arr1 + arr0) {
+            arr[currntIdx++] = 1;
+        } else {
+            arr[currntIdx++] = 2;
+        }
+    }
+
+    return arr;
+};
+
+const duchNationalFlag = (arr = []) => {
+    let low = 0;
+    let high = arr.length - 1;
+    let mid = 0;
+
+    while (mid <= high) {
+        if (arr[mid] == 0) {
+            [arr[mid], arr[low]] = [arr[low], arr[mid]];
+            low++;
+            mid++;
+        } else if (arr[mid] == 1) {
+            mid++;
+        } else {
+            [arr[mid], arr[high]] = [arr[high], arr[mid]];
+            high--;
+        }
+    }
+    return arr;
+};
+
+/**
+ * @param {number[]} nums
+ * @return {number[]}
+ */
+var sortArrayByParity = function (nums) {
+    const result = [];
+
+    for (let i = 0; i < nums.length; i++) {
+        if (nums[i] % 2 == 0) {
+            result.push(nums[i]);
+        }
+    }
+    for (let i = 0; i < nums.length; i++) {
+        if (nums[i] % 2 == 1) {
+            result.push(nums[i]);
+        }
+    }
+    return result;
+};
+
+var sortArrayByParityDNF = function (nums) {
+    let low = 0,
+        mid = 0,
+        high = nums.length - 1;
+    while (mid <= high) {
+        if (nums[mid] % 2 == 0) {
+            [nums[low], nums[mid]] = [nums[mid], nums[low]];
+            low++;
+            mid++;
+        } else {
+            mid++;
+        }
+    }
+    return nums;
+};
+
+// Incomplete solution
+var sortArrayByParityDNFIndex = function (nums) {
+    const result = [];
+    for (let i = 0; i < nums.length; i++) {
+        if (i % 2 == 0) {
+            //even index
+            if (nums[i] % 2 == 0) {
+                result.push(nums[i]);
+            } else {
+                result.push('even index a odd value');
+            }
+        } else {
+            //odd index
+            if (nums[i] % 2 == 1) {
+                //odd value
+                result.push(nums[i]);
+            } else {
+                result.push('odd index a even value');
+            }
+        }
+    }
+    return result;
+};
+
+var sortArrayByParityII = function (nums) {
+    let even = 0,
+        odd = 1;
+    let n = nums.length;
+
+    while (even < n && odd < n) {
+        if (nums[even] % 2 === 0) {
+            even += 2;
+        } else if (nums[odd] % 2 === 1) {
+            odd += 2;
+        } else {
+            [nums[even], nums[odd]] = [nums[odd], nums[even]];
+            even += 2;
+            odd += 2;
+        }
+    }
+    return nums;
+};
+
+//Sort Characters By Frequency
+
+const sortCharbyFreq = (str = '') => {
+    let result = '';
+    const countFreq = {};
+    for (let key in str) {
+        countFreq[str[key]] = (countFreq[str[key]] || 0) + 1;
+    }
+
+    const sorted = Object.entries(countFreq).sort((a, b) => b[1] - a[1]);
+
+    // Build string by frequency
+    for (let [ch, freq] of sorted) {
+        result += ch.repeat(freq);
+    }
+    return result;
+};
+const sortClrArr = [1, 2, 1, 0, 1, 0, 2, 0];
+/**
+ * @param {number[]} nums1
+ * @param {number} m
+ * @param {number[]} nums2
+ * @param {number} n
+ * @return {void} Do not return anything, modify nums1 in-place instead.
+ */
+var merge = function (nums1, m, nums2, n) {
+    let idx = m + n - 1,
+        i = m - 1,
+        j = n - 1;
+
+    while (i >= 0 && j >= 0) {
+        if (nums1[i] >= nums2[j]) {
+            nums1[idx--] = nums1[i--];
+        } else {
+            nums1[idx--] = nums2[j--];
+        }
+    }
+    while (j >= 0) {
+        nums[idx--] = nums2[j--];
+    }
+    return nums1;
+};
+
+const nums1 = [1, 2, 3, 0, 0, 0],
+    m = 3,
+    nums2 = [2, 5, 6],
+    n = 3;
+
+
 
