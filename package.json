@@ -1,0 +1,20 @@
+{
+  "name": "dsa",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/devmazaharul/DSA#readme",
+  "bugs": {
+    "url": "https://github.com/devmazaharul/DSA/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/devmazaharul/DSA.git"
+  },
+  "license": "ISC",
+  "author": "mazaharul islam",
+  "type": "commonjs",
+  "main": "function.js",
+  "scripts": {
+    "start": "nodemon string.js"
+  }
+}

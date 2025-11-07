@@ -53,6 +53,20 @@ var reverseString = function (s) {
  * @param {number} k
  * @return {string}
  */
+
+// তোমাকে একটা string s ও একটা সংখ্যা k দেওয়া হবে।
+
+// তোমার কাজ:
+
+// প্রতি 2k character এর chunk ধরো
+
+// এবং সেই chunk এর প্রথম k character reverse করো
+
+// বাকি k character 그대로 রাখো (skip)
+
+// এই process পুরো string এর জন্য repeat হবে।
+
+// এক কথায় — প্রতি 2k এর প্রথম k টা reverse করতে হবে।
 var reverseStr = function (s, k) {
     s = s.split('');
     for (let i = 0; i < s.length - 1; i += 2 * k) {
@@ -143,7 +157,7 @@ var reverseWords = function (s) {
     let isSpace = false;
     while (left < s.length) {
         if (s[left] !== ' ') {
-            res = res + s[left];
+            res += s[left];
             isSpace = true;
         } else {
             if (isSpace) {
@@ -153,10 +167,11 @@ var reverseWords = function (s) {
         }
         left++;
     }
-    res = res.endsWith('-') ? res.slice(0, res.length - 1) : res;
+    res = res.endsWith(' ') ? res.slice(0, res.length - 1) : res;
     return res.split(' ').reverse().join(' ');
 };
 
+//without handle space
 const reverseWordsAnother = (s) => {
     let item = s.split(' ');
     let left = 0,
@@ -211,7 +226,212 @@ const StringCompression = (chars) => {
     }
     return result;
 };
+const StringCompressionBest = (chars) => {
+    let read = 0,
+        write = 0;
 
+    while (read < chars.length) {
+        let char = chars[read];
+        let count = 0;
 
+        // count frequency
+        while (read < chars.length && chars[read] === char) {
+            read++;
+            count++;
+        }
 
+        chars[write++] = char; // write character
+
+        if (count > 1) {
+            for (let digit of String(count)) {
+                chars[write++] = digit; // write each digit
+            }
+        }
+    }
+
+    return chars.slice(0, write); // result trimmed
+};
+
+//brute frce solution
+var removeElementBruteForce = function (nums, val) {
+    let res = [];
+    for (let i = 0; i < nums.length; i++) {
+        if (nums[i] !== val) {
+            res.push(nums[i]);
+        }
+    }
+};
+
+/**
+ * @param {number[]} nums
+ * @param {number} val
+ * @return {number}
+ */
+
+var removeElement = function (nums, val) {
+    let i = 0;
+    while (i < nums.length) {
+        if (nums[i] === val) {
+            nums[i] = nums[nums.length - 1];
+            nums.pop();
+        } else {
+            i++;
+        }
+    }
+    return nums;
+};
+
+const nums = [3, 2, 2, 3],
+    val = 3;
+
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var removeDuplicates = function (nums = []) {
+    let k = 1;
+    for (let i = 1; i < nums.length; i++) {
+        if (nums[i] !== nums[i - 1]) {
+            nums[k++] = nums[i];
+        }
+    }
+    return k;
+};
+
+//  another simpplest way
+/**
+ * @param {string} s
+ * @return {string}
+ */
+var makeGood = function (s) {
+    let stack = [];
+
+    for (let ch in s) {
+        if (
+            stack.length > 0 &&
+            stack[stack.length - 1] !== s[ch] &&
+            stack[stack.length - 1].toLowerCase() === ss[ch].toLowerCase()
+        ) {
+            stack.pop();
+        } else {
+            stack.push(s[ch]);
+        }
+    }
+
+    return stack.join('');
+};
+
+const removeDuplicatesII = (array = []) => {
+    let k = 0;
+    for (let i = 0; i < array.length; i++) {
+        if (k < 2 || array[i] !== array[k - 2]) {
+            array[k] = array[i];
+            k++;
+        } else {
+            while (array[i] == array[i - 1]) {
+                i++;
+            }
+        }
+    }
+    return array.slice(0, k);
+};
+
+const removeDuplicatesIIL = (nums = []) => {
+    let read = 0,
+        write = 0;
+
+    while (read < nums.length) {
+        let char = nums[read];
+        let count = 0;
+
+        // count frequency
+        while (read < nums.length && nums[read] === char) {
+            read++;
+            count++;
+        }
+
+        const freq = Math.min(2, count);
+        for (let i = 0; i < freq; i++) {
+            nums[write++] = char;
+        }
+    }
+    return nums.slice(0, write);
+};
+
+/**
+ * @param {number[]} nums
+ * @return {void} Do not return anything, modify nums in-place instead.
+ */
+var moveZeroes = function (nums) {
+    //leetcode 283
+    let slow = 0;
+
+    for (let fast = 0; fast < nums.length; fast++) {
+        if (nums[fast] !== 0) {
+            [nums[slow], nums[fast]] = [nums[fast], nums[slow]];
+            slow++;
+        }
+    }
+
+    return nums;
+};
+
+const test = (str = '') => {
+    let res = [];
+    for (let i = 0; i < str.length; i++) {
+        if (
+            res.length &&
+            str[i] !== res[res.length - 1] &&
+            str[i].toLowerCase() == res[res.length - 1].toLowerCase()
+        ) {
+            res.pop();
+        } else {
+            res.push(str[i]);
+        }
+    }
+    return res.join('');
+};
+
+const productExceptSelf = (nums = []) => {
+    const n = nums.length;
+    const ans = new Array(n).fill(1);
+
+    // prefix multiply (left side)
+    let left = 1;
+    for (let i = 0; i < n; i++) {
+        ans[i] = left;
+        left *= nums[i];
+    }
+
+    let right = 1;
+    for (let j = n - 1; j >= 0; j--) {
+        ans[j] *= right;
+        right *= nums[j];
+    }
+
+    return ans;
+};
+
+/**
+ * @param {number[]} nums
+ * @return {number[]}
+ */
+var productExceptSelf2 = function (nums) {
+    const n = nums.length;
+    const ans = new Array(n).fill(1);
+
+    // prefix multiply (left side)
+    for (let i = 1; i < n; i++) {
+        ans[i] = ans[i - 1] * nums[i - 1];
+    }
+
+    // suffix multiply (right side)
+    let suffix = 1;
+    for (let i = n - 1; i >= 0; i--) {
+        ans[i] = ans[i] * suffix;
+        suffix *= nums[i];
+    }
+
+    return ans;
+};
 
