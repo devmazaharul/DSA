@@ -435,3 +435,50 @@ var productExceptSelf2 = function (nums) {
     return ans;
 };
 
+const calPow = (x, y) => {
+    let res = 1;
+    for (let i = 0; i < y; i++) {
+        res *= x;
+    }
+    return res;
+};
+
+const bestBuy = (prices = []) => {
+    let bestB = prices[0];
+    let maxProfix = 0;
+    for (let i = 1; i < prices.length; i++) {
+        if (prices[i] > bestB) {
+            if (maxProfix < prices[i] - bestB) {
+                maxProfix = prices[i] - bestB;
+            }
+        } else {
+            bestB = prices[i];
+        }
+    }
+    return maxProfix;
+};
+
+const twoSum = (arr = [], target) => {
+    for (let key in arr) {
+        let isAv = target - arr[key];
+
+        for (let i = key + 1; i < arr.length; i++) {
+            if (arr[i] == isAv) {
+                return [+key, i];
+            }
+        }
+    }
+};
+
+let w = 5;
+let h = 4;
+
+
+
+for (let i = 0; i < h; i++) {
+    let res=""
+   for (let j = i+1; j < w; j++) {
+    res=" ".repeat(i+1) + "*".repeat(w)
+   }
+   console.log(res)
+}
