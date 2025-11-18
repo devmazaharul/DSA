@@ -151,25 +151,6 @@ const strignGood = (s) => {
  * @param {string} s
  * @return {string}
  */
-var reverseWords = function (s) {
-    let left = 0;
-    let res = '';
-    let isSpace = false;
-    while (left < s.length) {
-        if (s[left] !== ' ') {
-            res += s[left];
-            isSpace = true;
-        } else {
-            if (isSpace) {
-                res = res + ' ';
-                isSpace = false;
-            }
-        }
-        left++;
-    }
-    res = res.endsWith(' ') ? res.slice(0, res.length - 1) : res;
-    return res.split(' ').reverse().join(' ');
-};
 
 //without handle space
 const reverseWordsAnother = (s) => {
@@ -226,6 +207,7 @@ const StringCompression = (chars) => {
     }
     return result;
 };
+
 const StringCompressionBest = (chars) => {
     let read = 0,
         write = 0;
@@ -459,26 +441,354 @@ const bestBuy = (prices = []) => {
 };
 
 const twoSum = (arr = [], target) => {
-    for (let key in arr) {
-        let isAv = target - arr[key];
+    const hash = {};
+    for (let i = 0; i < arr.length; i++) {
+        const complement = target - arr[i];
+        if (hash.hasOwnProperty(complement)) {
+            return [hash[complement], i];
+        }
+        hash[arr[i]] = i;
+    }
+    return [];
+};
 
-        for (let i = key + 1; i < arr.length; i++) {
-            if (arr[i] == isAv) {
-                return [+key, i];
+/**
+ * @param {number[]} nums
+ * @return {number[]}
+ */
+var findErrorNums = function (nums) {
+    let a, b;
+    //find repeting charecter
+    let hash = {};
+    for (let i = 0; i < nums.length; i++) {
+        let current = nums[i];
+        if (hash.hasOwnProperty(current)) {
+            a = current;
+            break;
+        }
+        hash[current] = i;
+    }
+
+    //mising number find
+    let n = nums.length;
+    const sumOneTN = (n * (n + 1)) / 2;
+    let currentSum = 0;
+    for (let i = 0; i < nums.length; i++) {
+        currentSum += nums[i];
+    }
+
+    const minusReptingDigit = currentSum - a;
+    const misingDigit = sumOneTN - minusReptingDigit;
+    b = misingDigit;
+    return [a, b];
+};
+
+const twoSum2 = (arr = [], target) => {
+    for (let i = 0; i < arr.length; i++) {
+        let mising = target - arr[i];
+        let misingIndex = arr.indexOf(mising);
+        if (misingIndex !== -1) {
+            return [i, misingIndex];
+        }
+    }
+
+    return [];
+};
+
+const findDuolicate = (arr = []) => {
+    let temp = [];
+    for (let i = 0; i < arr.length; i++) {
+        temp = arr.slice(i + 1, arr.length);
+        if (temp.includes(arr[i])) {
+            return arr[i];
+        }
+    }
+    return 0;
+};
+
+function threeSun(arr = []) {
+    arr.sort((a, b) => a - b);
+    let result = [];
+    for (let i = 0; i < arr.length; i++) {
+        let left = i + 1,
+            right = arr.length - 1;
+
+        while (left < right) {
+            if (i > 0 && arr[i] == arr[i - 1]) {
+                continue;
+            }
+            let sum = arr[i] + arr[left] + arr[right];
+
+            if (sum === 0) {
+                result.push([i, left, right]);
+                left++;
+                right--;
+            } else if (sum > 0) {
+                right--;
+            } else {
+                left++;
             }
         }
     }
+    return result;
+}
+
+/**
+ * @param {number[]} nums
+ * @return {number[][]}
+ */
+var threeSum = function (nums) {
+    nums.sort((a, b) => a - b);
+    let result = [];
+    for (let i = 0; i < nums.length; i++) {
+        let left = i + 1,
+            right = nums.length - 1;
+
+        while (left < right) {
+            if (i > 0 && nums[i] == nums[i - 1]) continue;
+            const sum = nums[i] + nums[left] + nums[right];
+            if (sum == 0) {
+                result.push([nums[i], nums[left], nums[right]]);
+                while (left < right && nums[left] === nums[left + 1]) left++;
+                while (left < right && nums[right] === nums[right - 1]) right--;
+                left++;
+                right--;
+            } else if (sum > 0) {
+                right--;
+            } else {
+                left++;
+            }
+        }
+    }
+    return result;
 };
 
-let w = 5;
-let h = 4;
+/**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number}
+ */
+var threeSumClosest = function (nums, target) {
+    nums.sort((a, b) => a - b);
+    let result = nums[0] + nums[1] + nums[2];
+    let minVal = Math.abs(result - target);
+    for (let i = 0; i < nums.length; i++) {
+        let left = i + 1,
+            right = nums.length - 1;
+        while (left < right) {
+            let sum = nums[i] + nums[left] + nums[right];
+            if (sum === target) return sum;
+            let minDiff = Math.abs(sum - target);
+            if (minDiff < minVal) {
+                result = sum;
+                minVal = minDiff;
+            }
+            if (sum < target) left++;
+            else right--;
+        }
+    }
+    return result;
+};
+
+const selectionsort = (arr = []) => {
+    for (let i = 0; i < arr.length - 1; i++) {
+        let minIndex = i;
+        for (let j = i + 1; j < arr.length; j++) {
+            if (arr[j] < arr[minIndex]) {
+                minIndex = j;
+            }
+        }
+        if (i !== minIndex) {
+            [arr[i], arr[minIndex]] = [arr[minIndex], arr[i]];
+        }
+    }
+    return arr;
+};
+
+const insertionSort = (arr = []) => {
+    for (let i = 1; i < arr.length; i++) {   // ✅ এখানে length-1 নয়, length দিতে হবে
+        let current = arr[i];
+        let prev = i - 1;
+
+        while (prev >= 0 && arr[prev] > current) {
+            arr[prev + 1] = arr[prev];  // shift
+            prev--;
+        }
+
+        arr[prev + 1] = current;  // correct position
+    }
+    return arr;
+};
 
 
+function majorityElement(nums) {
+  let candidate = null;
+  let count = 0;
+  let result=[]
+  for (let num of nums) {
+    if (count === 0) {
+      candidate = num;
+    }
 
-for (let i = 0; i < h; i++) {
-    let res=""
-   for (let j = i+1; j < w; j++) {
-    res=" ".repeat(i+1) + "*".repeat(w)
-   }
-   console.log(res)
+    if (num === candidate) {
+      count++;
+    } else {
+      count--;
+    }
+
+    if(candidate>=Math.floor(nums.length/3)){
+        result.push(candidate)
+    }
+  }
+
+  return result;
 }
+
+const majorityElementN3=(arr=[])=>{
+    let count1=0,count2=0
+    let candidate1=null,candidate2=null
+
+    for(let num of arr){
+        if(candidate1==num){
+            count1++
+        }else if(candidate2==num){
+            count2++
+        }else if(count1==0){
+            candidate1=num
+            count1=1
+        }else if(count2==0){
+            candidate2=num
+            count2=1
+        }else{
+            count1--
+            count2--
+        }
+      
+    }
+
+
+    // verify candidates
+    count1=0
+    count2=0
+    const result=[]
+    for(let num of arr){
+        if(candidate1==num) count1++
+        else if(candidate2==num) count2++
+    }
+    
+    const limit=Math.floor(arr.length/3)
+    if(count1>limit) result.push(candidate1) 
+    if(count2>limit) result.push(candidate2) 
+   return result
+}
+
+/**
+ * @param {number[]} nums
+ * @return {number[]}
+ */
+var majorityElement = function(nums) {
+    let count1=0,count2=0;
+    let cand1=null,cand2=null
+    // find possible candidates
+    for(let num=0;num<nums.length;num++){
+        if(cand1==nums[num]){
+            count1++
+        }else if(cand2==nums[num]){
+            count2++
+        }else if(count1==0){
+            cand1=nums[num]
+            count1=1
+        }else if(count2==0){
+            cand2=nums[num]
+            count2=1
+        }else {
+            count1--
+            count2--
+        }
+    }
+
+    // verify candidates
+    count1=0
+    count2=0
+    const result=[]
+    for(let num=0;num<nums.length;num++){
+        if(cand1===nums[num]) count1++
+        else if(cand2==nums[num])count2++
+    }
+    const limit=Math.floor(nums.length/3)
+    if(count1>limit) result.push(cand1)
+    if(count2>limit) result.push(cand2)
+return result
+};
+
+
+
+
+function countFreqU(arr=[]){
+    let freq=0
+    let prev=null
+    let result=[]
+    for (let i = 0; i < arr.length; i++) {
+       if(arr[i]==prev){
+        freq++
+       }else{
+        prev=arr[i]
+        freq=1
+       }
+
+       // check if exist more thant 2 times
+       if(freq<=2){
+        result.push(arr[i])
+       }
+    }
+    return result
+
+}
+
+const sortColor=(arr=[])=>{
+    let low=0,
+    mid=0,
+    high=arr.length-1
+
+    while(mid<=high){
+        if(arr[mid]==0){
+            [arr[low],arr[mid]]=[arr[mid],arr[low]]
+            low++
+            mid++
+        }else if(arr[mid]==1) mid++
+        else{
+            [arr[mid],arr[high]]=[arr[high],arr[mid]]
+            high--
+            
+        }
+    }
+    return arr
+}
+
+
+
+const maxSumK=(arr=[],k)=>{
+    let sum=0
+    let temp=[]
+    let final=[]
+    for (let i = 0; i < k; i++) {
+        sum+=arr[i]
+        temp.push(arr[i])
+    }
+   final.push([...temp])
+
+    let maxSum=sum
+
+    for (let i = k; i < arr.length; i++) {
+        sum+=arr[i]-arr[i-k]
+        temp.shift()
+        temp.push(arr[i])
+        final.push([...temp])
+        maxSum=Math.max(maxSum,sum)
+    }
+    console.log(final)
+    return maxSum
+}
+
+
+
