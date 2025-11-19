@@ -787,8 +787,7 @@ const maxSumK=(arr=[],k)=>{
         maxSum=Math.max(maxSum,sum)
     }
     console.log(final)
-    return maxSum
+    return maxSum/k
 }
-
 
 

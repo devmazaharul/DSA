@@ -873,43 +873,108 @@ const nonrepeatinAnotherway = (str = '') => {
     return -1;
 };
 
-const isValid=(arr,k,maxAllow)=>{
-    let student=1
-    let page=0
+const isValid = (arr, k, maxAllow) => {
+    let student = 1;
+    let page = 0;
 
     for (let i = 0; i < arr.length; i++) {
-       if(arr[i]>maxAllow){
-        return false
-       }
-       if(arr[i]+page<=maxAllow){
-        page+=arr[i] 
-       }
-       else{
-        student++
-        page=arr[i]
-       }
-        
-    }
-    return student > k ? false : true
-
-}
-
-
-function boookalocaation(arr=[],k){
-    let start=0
-    let ans=0
-    let end=arr.reduce((acc,curr)=>curr+acc)
-    if(k>arr.length) return false
-    
-    while(start<=end){
-        let mid=Math.floor(start+(end-start)/2)
-        if(isValid(arr,k,mid)){
-            ans=mid
-            end=mid-1
-        }else{
-            start=mid+1
+        if (arr[i] > maxAllow) {
+            return false;
+        }
+        if (arr[i] + page <= maxAllow) {
+            page += arr[i];
+        } else {
+            student++;
+            page = arr[i];
         }
     }
-    return ans
+    return student > k ? false : true;
+};
+
+function boookalocaation(arr = [], k) {
+    let start = 0;
+    let ans = 0;
+    let end = arr.reduce((acc, curr) => curr + acc);
+    if (k > arr.length) return false;
+
+    while (start <= end) {
+        let mid = Math.floor(start + (end - start) / 2);
+        if (isValid(arr, k, mid)) {
+            ans = mid;
+            end = mid - 1;
+        } else {
+            start = mid + 1;
+        }
+    }
+    return ans;
 }
+
+const maxArSum = (arr) => {
+    let sum = 0;
+    let maxSum = -Infinity;
+    for (let i = 0; i < arr.length; i++) {
+        sum += arr[i];
+        maxSum = Math.max(sum, maxSum);
+    }
+    return maxSum;
+};
+
+const DNF = (arr = []) => {
+   let left=0,mid=0,right=arr.length-1
+   while(mid<=right){
+    if(arr[mid]==0){
+        //swap 
+        [arr[mid],arr[left]]=[arr[left],arr[mid]]
+        mid++
+        left++
+    }else if(arr[mid]===1) mid++
+    else {
+        [arr[mid],arr[right]]=[arr[right],arr[mid]]
+        right--
+    }
+   }
+return arr
+};
+const sumOfK=(arr,k)=>{
+    let sum=0
+    let maxSum=-Infinity
+    for (let i = 0; i < k; i++) {
+       sum+=arr[i] 
+    }
+    maxSum=Math.max(maxSum,sum)
+
+    for (let i = k; i < arr.length; i++) {
+       sum+=arr[i]-arr[i-k]
+        maxSum=Math.max(sum,maxSum)
+    }
+
+    return maxSum
+}
+
+
+
+
+const productItself=(arr=[])=>{
+    let result=new Array().fill(1)
+    //prefix sum
+    let prefix=1
+    for (let i = 0; i < arr.length; i++) {
+      result[i]=prefix
+      prefix*=arr[i]
+    }
+
+    //suffix
+    let right=1
+    for (let i = arr.length-1; i >= 0; i--) {
+      result[i]*=right
+      right*=arr[i]
+        
+    }
+    return result
+}
+
+console.log(productItself([1,2,3,4]))
+
+
+
 
