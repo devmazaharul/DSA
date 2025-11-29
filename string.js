@@ -791,3 +791,4 @@ const maxSumK=(arr=[],k)=>{
 }
 
 
+console.log("first")

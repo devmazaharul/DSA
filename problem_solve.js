@@ -973,8 +973,30 @@ const productItself=(arr=[])=>{
     return result
 }
 
-console.log(productItself([1,2,3,4]))
 
 
+function NextPermutation(nums=[]){
+  let pivot=nums.length-2
+  while(pivot>=0 && nums[pivot]>=nums[pivot+1]) pivot--
+if(pivot<0){
+    nums.reverse()
+    return nums
+}
+
+let j=nums.length-1
+while(pivot<j && nums[j]>nums[pivot]) {
+    [nums[j],nums[pivot]]=[nums[pivot],nums[j]]
+    break
+}
+
+let left=pivot+1
+let right=nums.length-1
+while(left<right){
+    [nums[left],nums[right]]=[nums[right],nums[left]]
+    left++
+    right--
+}
+return nums
+}
 
 
