@@ -392,7 +392,7 @@ const sortClrArr = [1, 2, 1, 0, 1, 0, 2, 0];
  * @param {number} n
  * @return {void} Do not return anything, modify nums1 in-place instead.
  */
-var merge = function (nums1, m, nums2, n) {
+var mergeTwoArr = function (nums1, m, nums2, n) {
     let idx = m + n - 1,
         i = m - 1,
         j = n - 1;
@@ -410,10 +410,40 @@ var merge = function (nums1, m, nums2, n) {
     return nums1;
 };
 
-const nums1 = [1, 2, 3, 0, 0, 0],
-    m = 3,
-    nums2 = [2, 5, 6],
-    n = 3;
+function quicSort(arr, st = 0, end = arr.length - 1) {
+    if (st < end) {
+        const pidx = pivot(arr, st, end);
+        quicSort(arr, st, pidx - 1); //left part
+        quicSort(arr, pidx + 1, end); //right part
+    }
 
+    return arr;
+}
 
+function pivot(arr, st, end) {
+    let idx = st - 1;
+    let p = arr[end];
+    for (let i = st; i < end; i++) {
+        if (arr[i] < p) {
+            idx++;
+            [arr[idx], arr[i]] = [arr[i], arr[idx]];
+        }
+    }
+    idx++;
+    [arr[idx], arr[end]] = [arr[end], arr[idx]];
+    return idx;
+}
+const qarr = [4, 3, 1, 6, 4, 3, 6];
 
+function tawerOfHanoi(n, src, to, aux) {
+    if (n == 1) { //base case
+        console.log(`Move disk 1 from ${src} to ${to}`);
+        return
+    }
+    tawerOfHanoi(n - 1, src, aux, to);
+    console.log(`Move disk ${n} from ${to} to ${src}`);
+
+    tawerOfHanoi(n - 1, aux, to, src);
+}
+
+tawerOfHanoi(3, 'A', 'C', 'B')

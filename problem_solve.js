@@ -920,83 +920,509 @@ const maxArSum = (arr) => {
 };
 
 const DNF = (arr = []) => {
-   let left=0,mid=0,right=arr.length-1
-   while(mid<=right){
-    if(arr[mid]==0){
-        //swap 
-        [arr[mid],arr[left]]=[arr[left],arr[mid]]
-        mid++
-        left++
-    }else if(arr[mid]===1) mid++
-    else {
-        [arr[mid],arr[right]]=[arr[right],arr[mid]]
-        right--
+    let left = 0,
+        mid = 0,
+        right = arr.length - 1;
+    while (mid <= right) {
+        if (arr[mid] == 0) {
+            //swap
+            [arr[mid], arr[left]] = [arr[left], arr[mid]];
+            mid++;
+            left++;
+        } else if (arr[mid] === 1) mid++;
+        else {
+            [arr[mid], arr[right]] = [arr[right], arr[mid]];
+            right--;
+        }
     }
-   }
-return arr
+    return arr;
 };
-const sumOfK=(arr,k)=>{
-    let sum=0
-    let maxSum=-Infinity
+const sumOfK = (arr, k) => {
+    let sum = 0;
+    let maxSum = -Infinity;
     for (let i = 0; i < k; i++) {
-       sum+=arr[i] 
+        sum += arr[i];
     }
-    maxSum=Math.max(maxSum,sum)
+    maxSum = Math.max(maxSum, sum);
 
     for (let i = k; i < arr.length; i++) {
-       sum+=arr[i]-arr[i-k]
-        maxSum=Math.max(sum,maxSum)
+        sum += arr[i] - arr[i - k];
+        maxSum = Math.max(sum, maxSum);
     }
 
-    return maxSum
-}
+    return maxSum;
+};
 
-
-
-
-const productItself=(arr=[])=>{
-    let result=new Array().fill(1)
+const productItself = (arr = []) => {
+    let result = new Array().fill(1);
     //prefix sum
-    let prefix=1
+    let prefix = 1;
     for (let i = 0; i < arr.length; i++) {
-      result[i]=prefix
-      prefix*=arr[i]
+        result[i] = prefix;
+        prefix *= arr[i];
     }
 
     //suffix
-    let right=1
-    for (let i = arr.length-1; i >= 0; i--) {
-      result[i]*=right
-      right*=arr[i]
-        
+    let right = 1;
+    for (let i = arr.length - 1; i >= 0; i--) {
+        result[i] *= right;
+        right *= arr[i];
     }
-    return result
+    return result;
+};
+
+function NextPermutation(nums = []) {
+    let pivot = nums.length - 2;
+    while (pivot >= 0 && nums[pivot] >= nums[pivot + 1]) pivot--;
+    if (pivot < 0) {
+        // no pivot
+        nums.reverse();
+        return nums;
+    }
+
+    let j = nums.length - 1;
+    while (pivot < j && nums[j] > nums[pivot]) {
+        [nums[j], nums[pivot]] = [nums[pivot], nums[j]];
+        break;
+    }
+
+    let left = pivot + 1;
+    let right = nums.length - 1;
+    while (left < right) {
+        [nums[left], nums[right]] = [nums[right], nums[left]];
+        left++;
+        right--;
+    }
+    return nums;
 }
 
+function isPossible(book, m, mid) {
+    let student = 1,
+        page = 0;
+    let n = book.length;
 
+    for (let i = 0; i < n; i++) {
+        if (book[i] > mid) {
+            return false;
+        }
 
-function NextPermutation(nums=[]){
-  let pivot=nums.length-2
-  while(pivot>=0 && nums[pivot]>=nums[pivot+1]) pivot--
-if(pivot<0){
-    nums.reverse()
-    return nums
+        if (book[i] + page <= mid) {
+            page += book[i];
+        } else {
+            student++;
+            page = book[i];
+        }
+    }
+    return student <= m;
 }
 
-let j=nums.length-1
-while(pivot<j && nums[j]>nums[pivot]) {
-    [nums[j],nums[pivot]]=[nums[pivot],nums[j]]
-    break
+function bookAlocation(book, m) {
+    let low = Math.max(...book);
+    let high = book.reduce((acc, curr) => acc + curr, 0);
+    let result = Infinity;
+    while (low <= high) {
+        let mid = Math.floor(low + (high - low) / 2);
+        if (isPossible(book, m, mid)) {
+            result = mid;
+            high = mid - 1;
+        } else {
+            low = mid + 1;
+        }
+    }
+    return result;
 }
 
-let left=pivot+1
-let right=nums.length-1
-while(left<right){
-    [nums[left],nums[right]]=[nums[right],nums[left]]
-    left++
-    right--
-}
-return nums
+function SubarrySum(arr = [], k) {
+    let subar = [];
+    for (let i = 0; i < arr.length; i++) {
+        for (let j = i; j < arr.length; j++) {
+            let suba = arr.slice(i, j + 1);
+            if (suba.reduce((acc, curr) => acc + curr, 0) === k) {
+                return [i, '--->', j];
+            }
+        }
+    }
+    return subar;
 }
 
+function findMinimumRotatedSortedArr(arr = []) {
+    let low = 0;
+    let high = arr.length - 1;
 
+    while (low < high) {
+        let mid = Math.floor((low + high) / 2);
+
+        if (arr[mid] > arr[high]) {
+            // Minimum right side e
+            low = mid + 1;
+        } else {
+            // Minimum mid or left side e
+            high = mid;
+        }
+    }
+
+    return arr[low]; // index of minimum element
+}
+
+function findMinimumRotatedSortedArrWitarget(arr = [], target) {
+    let left = 0,
+        right = arr.length - 1;
+    while (left <= right) {
+        let mid = Math.floor(left + (right - left) / 2);
+        if (arr[mid] === target) return mid;
+        if (arr[left] <= arr[mid]) {
+            //left part are sorted
+            if (arr[left] <= target && target < arr[mid]) {
+                right = mid - 1;
+            } else {
+                left = mid + 1;
+            }
+        } else {
+            //right part are sorted
+            if (arr[mid] < target && target <= arr[right]) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+    }
+    return -1;
+}
+
+function allSubSets(arr = [], ans = [], idx = 0) {
+    if (ans.length === arr.length) return ans;
+    ans.push(arr[idx]);
+    const res = allSubSets(arr, ans, idx + 1);
+    ans.pop();
+    return res;
+}
+
+function fact(n) {
+    if (n <= 1) return n;
+    return n * fact(n - 1);
+}
+
+function isAnagram(a, b) {
+    if (a.length !== b.length) return false;
+
+    const obj = {};
+
+    for (let key of a) {
+        obj[key] = (obj[key] || 0) + 1;
+    }
+
+    for (let key of b) {
+        if (key in obj == false) return false;
+        obj[key]--;
+    }
+
+    return true;
+}
+
+function print1toN(n) {
+    if (n === 0) return 99;
+    console.log(n);
+    print1toN(--n);
+}
+
+function reverseDisit(n, ans = '') {
+    if (n == 0) {
+        return +ans;
+    }
+    ans += n % 10;
+    return reverseDisit(Math.floor(n / 10), ans);
+}
+
+function binaryS(arr, target, left = 0, right = arr.length - 1) {
+    if (left > right) {
+        return -1;
+    }
+    let mid = Math.floor(left + (right - left) / 2);
+    if (arr[mid] === target) return mid;
+    if (arr[mid] < target) {
+        return binaryS(arr, target, mid + 1, right);
+    } else {
+        return binaryS(arr, target, left, mid - 1);
+    }
+}
+
+function isSorted(arr, i = 0) {
+    if (i == arr.length - 1) return true;
+    return arr[i] <= arr[i + 1] && isSorted(arr, i + 1);
+}
+
+function lengthOfLastWord(s) {
+    let last = s.length - 1;
+    let len = 0;
+
+    while (last >= 0) {
+        if (s[last] !== ' ') {
+            len++;
+        }
+
+        last--;
+        if (len > 0 && s[last] == ' ') {
+            break;
+        }
+    }
+    return len;
+}
+
+//console.log(lengthOfLastWord("   Hellow    "))
+
+function findFirstOcc(str = '', occ) {
+    for (let i = 0; i < str.length; i++) {
+        if (str.startsWith(occ, i)) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+function build(n) {
+    if (n === 0) return [];
+
+    const prev = build(n - 1);
+
+    prev.push(n);
+    return prev;
+}
+
+function printParteen(n) {
+    if (n == 0) return;
+    let sum = '';
+    function small(m) {
+        if (m == 0) return;
+        sum += '*';
+        small(m - 1);
+    }
+    small(n);
+    console.log(sum);
+    printParteen(n - 1);
+}
+
+function bubbleSprt(arr, r, c) {
+    if (r == 0) return arr;
+    if (c < r) {
+        if (arr[c] > arr[c + 1]) {
+            [arr[c], arr[c + 1]] = [arr[c + 1], arr[c]];
+        }
+        return bubbleSprt(arr, r, c + 1);
+    } else {
+        return bubbleSprt(arr, r - 1, 0);
+    }
+}
+
+const arrM = [3, 2, 1, 6, 1, 2];
+
+function mergeSort(arr = []) {
+    if (arr.length <= 1) return arr;
+    let mid = Math.floor(arr.length / 2);
+    let left = mergeSort(arr.slice(0, mid));
+    let right = mergeSort(arr.slice(mid));
+    return merge(left, right);
+}
+
+function merge(left = [], right = []) {
+    let result = [];
+    let i = 0;
+    let j = 0;
+
+    while (i < left.length && j < right.length) {
+        if (left[i] > arr[j]) {
+            result.push(arr[j]);
+            j++;
+        } else {
+            result.push(arr[i]);
+            i++;
+        }
+    }
+    return result.concat(left.slice(i)).concat(right.slice(j));
+}
+
+const mergeSortWithoutBuiting = (arr, start = 0, end = arr.length - 1) => {
+    if (start >= end) return arr;
+    let mid = Math.floor(start + (end - start) / 2);
+    //left
+    mergeSortWithoutBuiting(arr, start, mid);
+    mergeSortWithoutBuiting(arr, mid + 1, end);
+    return mergeAn(arr, start, mid, end);
+};
+
+const mergeAn = (arr = [], start, mid, end) => {
+    let temp = [];
+    let i = start;
+    let j = mid + 1;
+    let k = 0;
+
+    while (i <= mid && j <= end) {
+        if (arr[i] < arr[j]) {
+            temp[k] = arr[i++];
+        } else {
+            temp[k] = arr[j++];
+        }
+        k++;
+    }
+
+    while (i <= mid) {
+        temp[k++] = arr[i++];
+    }
+    while (j <= end) {
+        temp[k++] = arr[j++];
+    }
+
+    // inplace redeine
+    for (let i = 0; i < temp.length; i++) {
+        arr[start + i] = temp[i];
+    }
+    return arr;
+};
+
+function fibo(n, ans = 0) {
+    if (n <= 1) return n;
+
+    const f1 = fibo(n - 1);
+    const f2 = fibo(n - 2);
+    ans += f1 + f2;
+    return ans;
+}
+
+function fact(n) {
+    if (n <= 1) return 1;
+    return n * fact(n - 1);
+}
+
+function an(n) {
+    if (n == 0) {
+        return;
+    }
+    console.log('calling ' + n);
+    an(n - 1);
+
+    return n * n;
+}
+
+/**
+ * @param {string} s
+ * @return {boolean}
+ */
+var isValidP = function (s) {
+    const stack = [];
+    const hash = {
+        '(': ')',
+        '{': '}',
+        '[': ']',
+    };
+
+    for (let char of s) {
+        if (char in hash) {
+            stack.push(hash[char]);
+        } else {
+            if (stack.length && stack[stack.length - 1] === char) {
+                stack.pop();
+            } else {
+                return false;
+            }
+        }
+    }
+    return stack.length == 0;
+};
+
+/**
+ * @param {string} s
+ * @return {number}
+ */
+var romanToInt = function (s) {
+    const man = {
+        I: 1,
+        V: 5,
+        X: 10,
+        L: 50,
+        C: 100,
+        D: 500,
+        M: 1000,
+    };
+    let sum = 0;
+    for (let i = 0; i < s.length; i++) {
+        if (man[s[i]] < man[s[i + 1]]) {
+            sum = sum + (man[s[i + 1]] - man[s[i]]);
+            i += 1;
+        } else {
+            sum += man[s[i]];
+        }
+    }
+    return sum;
+};
+
+function quicSort(arr) {
+    if (arr.length <= 1) return arr;
+    let left = [];
+    let right = [];
+    let pivot = arr[0];
+    for (let i = 1; i < arr.length; i++) {
+        if (arr[i] < pivot) {
+            left.push(arr[i]);
+        } else {
+            right.push(arr[i]);
+        }
+    }
+    return [...quicSort(left), pivot, ...quicSort(right)];
+}
+
+function quicSortBest(arr, st = 0, end = arr.length - 1) {
+    if (st < end) {
+        const pivotIdx = partition(arr, st, end);
+        quicSortBest(arr, st, pivotIdx - 1);
+        quicSortBest(arr, pivotIdx + 1, end);
+    }
+    return arr;
+}
+
+function partition(arr, st, end) {
+    let idx = st - 1;
+    let pivot = arr[end];
+    for (let i = st; i < end; i++) {
+        if (arr[i] < pivot) {
+            idx++;
+            [arr[i], arr[idx]] = [arr[idx], arr[i]];
+        }
+    }
+    idx++;
+    [arr[end], arr[idx]] = [arr[idx], arr[end]];
+    return idx;
+}
+
+function mergeSort(arr, st = 0, end = arr.length - 1) {
+    if (st === end) return [arr[st]];
+
+    let mid = Math.floor(st + (end - st) / 2);
+
+    let left = mergeSort(arr, st, mid);
+    let right = mergeSort(arr, mid + 1, end);
+
+    return merge(arr,left, right);
+}
+
+function merge(arr,left, right) {
+    let i = 0,
+        j = 0;
+    let result = [];
+
+    while (i < left.length && j < right.length) {
+        if (left[i] < right[j]) {
+            result.push(left[i]);
+            i++;
+        } else {
+            result.push(right[j]);
+            j++;
+        }
+    }
+
+    while (i < left.length) result.push(left[i++]);
+    while (j < right.length) result.push(right[j++]);
+
+    return result;
+}
+const marr=[3,2,1,6,5,4,3,2]
+console.log(mergeSort(marr))
+console.log(marr)
