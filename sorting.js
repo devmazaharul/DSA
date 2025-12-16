@@ -436,9 +436,10 @@ function pivot(arr, st, end) {
 const qarr = [4, 3, 1, 6, 4, 3, 6];
 
 function tawerOfHanoi(n, src, to, aux) {
-    if (n == 1) { //base case
+    if (n == 1) {
+        //base case
         console.log(`Move disk 1 from ${src} to ${to}`);
-        return
+        return;
     }
     tawerOfHanoi(n - 1, src, aux, to);
     console.log(`Move disk ${n} from ${to} to ${src}`);
@@ -446,4 +447,56 @@ function tawerOfHanoi(n, src, to, aux) {
     tawerOfHanoi(n - 1, aux, to, src);
 }
 
-tawerOfHanoi(3, 'A', 'C', 'B')
+const plusOne = (n) => {
+    for (let index = n.length - 1; index >= 0; index--) {
+        n[index]++;
+        if (n[index] < 10) {
+            return n;
+        }
+        n[index] = 0;
+    }
+
+    n.unshift(1);
+    return n;
+};
+
+var containsDuplicate = function (nums) {
+    return nums.filter((val, i) => nums.indexOf(val) !== i).length ? false : true;
+};
+
+/**
+ * @param {string} s
+ * @param {string} t
+ * @return {boolean}
+ */
+function isAnagramA(s, t) {
+    if (s.length !== t.length) return false;
+    const obj = {};
+    for (let i = 0; i < s.length; i++) {
+        obj[s[i]] = (obj[s[i]] || 0) + 1;
+    }
+
+    for (let key of t) {
+        if (obj[key] && obj[key] > 0) {
+            obj[key]--;
+        } else {
+            return false;
+        }
+    }
+    return true;
+}
+let s = 'anagradm',
+    t = 'nagarawm';
+
+function isDuplicate(nums = []) {
+    for (let i = 0; i < nums.length; i++) {
+        const first = nums[i];
+        let temp = nums.slice(i + 1);
+        if (temp.includes(first)) {
+            return true;
+        }
+    }
+
+    return false;
+}
+console.log(isDuplicate([1, 2, 4]));
