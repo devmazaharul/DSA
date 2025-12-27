@@ -571,8 +571,6 @@ function maxScore(nums, k) {
     return maxPoint;
 }
 
-
-
 function totalFruitS(frouts = []) {
     let left = 0;
     let max = 0;
@@ -583,11 +581,11 @@ function totalFruitS(frouts = []) {
         map.set(ch, (map.get(ch) || 0) + 1);
         while (map.size > 2) {
             let leftFrout = frouts[left];
-            map.set(leftFrout,map.get(leftFrout)-1)
-            if(map.get(leftFrout)==0){
-                map.delete(leftFrout)
+            map.set(leftFrout, map.get(leftFrout) - 1);
+            if (map.get(leftFrout) == 0) {
+                map.delete(leftFrout);
             }
-            left++
+            left++;
         }
     }
 
@@ -708,3 +706,107 @@ function DistinctChar(str = '', k) {
     }
     return max;
 }
+
+function DisCharBrute(str = '', k) {
+    let max = 0;
+
+    for (let i = 0; i < str.length; i++) {
+        let map = {};
+        for (let j = i; j < str.length; j++) {
+            let char = str[j];
+            map[char] = (map[char] || 0) + 1;
+            if (Object.keys(map).length > k) {
+                break;
+            }
+            max = Math.max(max, j - i + 1);
+        }
+    }
+
+    return max;
+}
+
+function majorityElementOptimize(arr = []) {
+    let ans = '';
+    let count = 0;
+    for (let i = 0; i < arr.length; i++) {
+        if (count === 0) {
+            ans = arr[i];
+        }
+
+        if (ans === arr[i]) {
+            count++;
+        } else {
+            count--;
+        }
+    }
+    return ans;
+}
+
+function majorityElementLogN(arr) {
+    let map = {};
+    for (let i = 0; i < arr.length; i++) {
+        const char = arr[i];
+        map[char] = (map[char] || 0) + 1;
+    }
+
+    for (let key in map) {
+        let major = Math.floor(arr.length / 2);
+        if (map[key] >= major) {
+            return +key;
+        }
+    }
+}
+
+var numberOfSubstringsBrute = function (s = '') {
+    let result = 0;
+    for (let i = 0; i < s.length; i++) {
+        let count = { a: 0, b: 0, c: 0 };
+
+        for (let j = i; j < s.length; j++) {
+            const sb = s.substring(i, j + 1);
+            if (sb.includes('a') && sb.includes('b') && sb.includes('c')) {
+                result += s.length - j;
+                break;
+            }
+        }
+    }
+
+    return result;
+};
+
+function longestSubstringReplace(str = '', k) {
+    let maxLen = 0;
+    for (let i = 0; i < str.length; i++) {
+        let count = 0;
+        for (let j = i; j < str.length; j++) {
+            if (str[j] === str[i] && count < k) {
+                maxLen = Math.max(maxLen, j - i + 1);
+            } else {
+                count++;
+                maxLen = Math.max(maxLen, j - i + 1);
+            }
+            if (count > k) {
+                break;
+            }
+        }
+    }
+    return maxLen;
+}
+
+function longestSubstringReplaceSlide(str = '', k) {
+    let maxlen=0
+    let maxCount=0
+    let map={}
+    let left=0
+    for (let right = 0; right < str.length; right++) {
+        map[str[right]]=(map[str[right]] || 0) + 1
+        maxCount=Math.max(maxCount,map[str[right]])
+        while((right-left+1)-maxCount>k){
+            map[str[left]]--
+            left++
+        }
+        maxlen=Math.max(maxlen,right-left+1)
+    }
+    return maxlen
+}
+console.log(longestSubstringReplaceSlide('aababb'));

@@ -15,6 +15,9 @@
   "type": "commonjs",
   "main": "function.js",
   "scripts": {
-    "start": "nodemon today.js"
+    "start": "nodemon test.js"
+  },
+  "dependencies": {
+    "axios": "^1.13.2"
   }
 }

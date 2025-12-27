@@ -93,19 +93,20 @@ const rotatedSortedArr = (arr = [], target) => {
             return mid;
         }
         if (arr[mid] >= arr[left]) {
-            if (arr[left] <= target && arr[mid] >= target) {
+            if (arr[left] <= target && target < arr[mid]) {
                 right = mid - 1;
             } else {
                 left = mid + 1;
             }
         } else {
-            if (arr[mid] <= target && arr[right] >= target) {
+            if (arr[mid] < target && target <=arr[right]) {
                 left = mid + 1;
             } else {
                 right = mid - 1;
             }
         }
     }
+    return -1
 };
 const rotatedArr = [4, 5, 6, 1, 2, 3];
 
@@ -125,7 +126,7 @@ const findMinimum = (arr = []) => {
 };
 
 // rotated sorted array
-const isNow = (arr = [], target) => {
+const rotatedSortedArrII = (arr = [], target) => {
     let l = 0;
     let end = arr.length - 1;
 
@@ -143,14 +144,14 @@ const isNow = (arr = [], target) => {
 
         if (arr[l] <= arr[mid]) {
             //left side
-            if (arr[l] <= target && arr[mid] > target) {
+            if (arr[l] < target && target<arr[mid] ) {
                 end = mid - 1;
             } else {
                 l = mid + 1;
             }
         } else {
             //right side
-            if (arr[end] >= target && arr[mid] < target) {
+            if (arr[mid]<target && target<=arr[end]) {
                 l = mid + 1;
             } else {
                 end = mid - 1;

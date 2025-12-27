@@ -500,7 +500,7 @@ function maxWatherWhile(arr = []) {
     let left = 0;
     let right = arr.length - 1;
 
-    while (right > left) {
+    while (left <right) {
         const height = Math.min(arr[left], arr[right]);
         const width = right - left;
         const base = height * width;
@@ -530,7 +530,7 @@ function minWaterWhile(arr = []) {
         minWater = Math.min(minWater, area);
 
         // ছোট height দিকটা সরাও
-        if (arr[left] < arr[right]) {
+        if (arr[left] >  arr[right]) {
             left++;
         } else {
             right--;
