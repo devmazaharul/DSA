@@ -608,45 +608,42 @@ function windowMax(nums = [], k) {
  * @param {number} target
  * @return {number[]}
  */
-var searchRange = function(nums, target) {
-    let lb=lowerBound(nums,target)
-    let ub=upperBound(nums,target)
-    if(lb===nums.length || nums[lb]!==target){
+var searchRange = function (nums, target) {
+    let lb = lowerBound(nums, target);
+    let ub = upperBound(nums, target);
+    if (lb === nums.length || nums[lb] !== target) {
         // not found
-        return [-1,-1]
-    } 
-    return [lb,ub-1]
+        return [-1, -1];
+    }
+    return [lb, ub - 1];
 };
 
-function lowerBound(nums,target){
-    let l=0
-    let r=nums.length
-    while(l<r){
-        let mid=Math.floor(l+(r-l)/2)
-        if(nums[mid]<target){
-            l=mid+1
-        }else{
-            r=mid
+function lowerBound(nums, target) {
+    let l = 0;
+    let r = nums.length;
+    while (l < r) {
+        let mid = Math.floor(l + (r - l) / 2);
+        if (nums[mid] < target) {
+            l = mid + 1;
+        } else {
+            r = mid;
         }
     }
-    return l
+    return l;
 }
-function upperBound(nums,target){
-    let l=0
-    let r=nums.length
-    while(l<r){
-        let mid=Math.floor(l+(r-l)/2)
-        if(nums[mid]<=target){
-            l=mid+1
-        }else{
-            r=mid
+function upperBound(nums, target) {
+    let l = 0;
+    let r = nums.length;
+    while (l < r) {
+        let mid = Math.floor(l + (r - l) / 2);
+        if (nums[mid] <= target) {
+            l = mid + 1;
+        } else {
+            r = mid;
         }
     }
-    return l
+    return l;
 }
-
-
-
 
 function minWaterWhile(arr = []) {
     if (arr.length < 2) return 0; // কমপক্ষে ২টা height দরকার
@@ -665,13 +662,461 @@ function minWaterWhile(arr = []) {
 
         // ছোট height দিকটা সরাও
         if (arr[left] < arr[right]) {
-            right--
+            right--;
         } else {
-            left++
+            left++;
         }
     }
 
     return minWater;
 }
 
-console.log(minWaterWhile([2,3,2,5,6,7]))
+function findMinValRotatedSortedArray(arr = []) {
+    let min = 0;
+    // for (let i = 0; i < arr.length; i++) { // O(n)
+    //     min = Math.min(min, arr[i]);
+    // }
+
+    let left = 0;
+    let right = arr.length - 1;
+    while (left < right) {
+        let mid = Math.floor(left + (right - left) / 2);
+        if (arr[mid] > arr[right]) {
+            left = mid + 1;
+        } else {
+            right = mid;
+        }
+    }
+
+    return arr[left];
+}
+
+function findMinValRotatedSortedArrayII(arr = []) {
+    let left = 0;
+    let min = Infinity;
+    let right = arr.length - 1;
+    while (left < right) {
+        let mid = Math.floor(left + (right - left) / 2);
+        if (arr[left] < arr[right]) {
+            return arr[left];
+        }
+        if (arr[mid] >= arr[left]) {
+            left = mid + 1;
+        } else {
+            right = mid;
+        }
+    }
+    return arr[left];
+}
+
+function findMaxrotatedSortedArrayOne(arr = []) {
+    let left = 0;
+    let right = arr.length - 1;
+    while (left < right) {
+        let mid = Math.floor(left + (right - left) / 2);
+        if (arr[mid] > arr[right]) {
+            left = mid + 1;
+        } else {
+            right = mid;
+        }
+    }
+    return arr[(left - 1 + arr.length) % arr.length];
+}
+
+function findMaxrotatedSortedArrayTwo(arr = []) {
+    let left = 0;
+    let right = arr.length - 1;
+    while (left <= right) {
+        let mid = Math.floor(left + (right - left) / 2);
+        if (mid < arr.length - 1 && arr[mid] > arr[mid + 1]) {
+            return arr[mid];
+        }
+        if (arr[mid] > arr[right]) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
+    }
+}
+
+function majorityElelmetII(arr) {
+    let m1 = null;
+    let m2 = null;
+    let freq1 = 0;
+    let freq2 = 0;
+    for (let num of arr) {
+        if (m1 === num) {
+            freq1++;
+        } else if (m2 == num) {
+            freq2++;
+        } else if (freq1 == 0) {
+            freq1 = 1;
+            m1 = num;
+        } else if (freq2 == 0) {
+            freq2 = 1;
+            m2 = num;
+        } else {
+            freq1--;
+            freq2--;
+        }
+    }
+    //verify candidate
+    freq1 = 0;
+    freq2 = 0;
+    for (let num of arr) {
+        if (num == m1) freq1++;
+        if (num == m2) freq2++;
+    }
+    let res = [];
+
+    if (freq1 > Math.floor(arr.length / 3)) res.push(m1);
+    if (freq2 > Math.floor(arr.length / 3)) res.push(m2);
+    return res;
+}
+
+function singleElementBrute(arr = []) {
+    let obj = {};
+    for (let i = 0; i < arr.length; i++) {
+        let current = arr[i];
+        obj[current] = (obj[current] || 0) + 1;
+    }
+
+    for (let key in obj) {
+        if (obj[key] === 1) {
+            return +key;
+        }
+    }
+    return -1;
+}
+
+function singleElementOptimalBit(arr = []) {
+    //O(n)
+    let single = 0;
+    for (let i = 0; i < arr.length; i++) {
+        single ^= arr[i];
+    }
+    return single;
+}
+
+function singleElementOptimal(arr = []) {
+    let left = 0;
+    let right = arr.length - 1;
+    while (left < right) {
+        let mid = Math.floor(left + (right - left) / 2);
+        if (mid % 2 == 1) mid--;
+        if (arr[mid] === arr[mid + 1]) {
+            left = mid + 2;
+        } else {
+            right = mid;
+        }
+    }
+    return arr[left];
+}
+
+function peakElementBrute(arr = []) {
+    for (let i = 1; i < arr.length - 1; i++) {
+        if (arr[i - 1] < arr[i] && arr[i + 1] < arr[i]) {
+            return i;
+        }
+    }
+}
+function peakElementOptimal(arr = []) {
+    if (arr.length == 1) return arr[0];
+    let left = 0;
+    let right = arr.length - 1;
+    while (left < right) {
+        let mid = Math.floor(left + (right - left) / 2);
+
+        if (arr[mid] < arr[mid + 1]) {
+            left = mid + 1;
+        } else {
+            right = mid;
+        }
+    }
+    return arr[left];
+}
+
+function sqrt(n) {
+    let ans = 0;
+    for (let i = 0; i < n; i++) {
+        if (i * i <= n) {
+            ans = i;
+        } else {
+            break;
+        }
+    }
+    return ans;
+}
+
+function sqrtBinarySearchOnAns(n) {
+    let low = 0;
+    let hight = Math.floor(n / 2);
+    while (low <= hight) {
+        let mid = Math.floor(low + (hight - low) / 2);
+        if (mid * mid <= n) {
+            low = mid + 1;
+        } else {
+            hight = mid - 1;
+        }
+    }
+
+    return hight;
+}
+
+/**
+ * @param {number} c
+ * @return {boolean}
+ */
+var judgeSquareSum = function (c) {
+    let left = 0;
+    let right = Math.floor(Math.sqrt(c));
+
+    while (left <= right) {
+        let sum = left * left + right * right;
+        if (sum == c) {
+            return true;
+        } else if (sum < c) {
+            left++;
+        } else {
+            right--;
+        }
+    }
+    return false;
+};
+
+function isPerfectSquare(n) {
+    let left = 0;
+    let right = n / 2;
+    while (left <= right) {
+        let mid = Math.floor(left + (right - left) / 2);
+        let sq = mid * mid;
+        if (sq === n) {
+            return true;
+        } else if (sq < n) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
+    }
+    return false;
+}
+
+function nthRootBrute(n, m) {
+    for (let i = 0; i < n; i++) {
+        let multi = 1;
+        for (let j = 0; j < m; j++) {
+            multi *= i;
+            if (multi > n) break;
+        }
+        if (multi == n) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+function nthRootOptimal(n, m) {
+    let low = 0;
+    let high = n / 2;
+
+    while (low <= high) {
+        let mid = Math.floor(low + (high - low) / 2);
+        let res = func(mid, m, n);
+        if (res === n) {
+            return mid;
+        } else if (res < n) {
+            low = mid + 1;
+        } else {
+            high = mid - 1;
+        }
+    }
+
+    return -1;
+}
+
+function func(mid, m, n) {
+    let ans = 1;
+    for (let i = 0; i < m; i++) {
+        ans *= mid;
+        if (ans > n) break;
+    }
+    return ans;
+}
+
+function moveZero(arr = []) {
+    let left = 0;
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i] !== 0) {
+            arr[left++] = arr[i];
+        }
+    }
+
+    for (let i = left; i < arr.length; i++) {
+        arr[left++] = 0;
+    }
+    return arr;
+}
+
+/**
+ * @param {number[]} numbers
+ * @param {number} target
+ * @return {number[]}
+ */
+var twoSumA = function (numbers, target) {
+    let left = 0;
+    let right = numbers.length - 1;
+    console.log(right);
+    while (left < right) {
+        let sum = numbers[left] + numbers[right];
+
+        if (sum == target) {
+            return [left, right];
+        } else if (sum < target) {
+            left++;
+        } else {
+            right--;
+        }
+    }
+};
+
+function happyNumber(n) {
+    let result = [];
+    let temp = 0;
+    while (n != 0) {
+        let lastDigit = n % 10;
+        temp += lastDigit * lastDigit;
+        n = Math.floor(n / 10);
+    }
+
+    if (temp == 1) {
+        return 'happy number';
+    } else {
+        if (result.includes(temp)) {
+            return 'Not a happy number';
+        } else {
+            result.push(temp);
+            happyNumber(temp);
+        }
+    }
+}
+
+function minEatingSpeed(piles = [], h) {
+    let max = Math.max(...piles);
+    for (let i = 1; i <= max; i++) {
+        let maxH = 0;
+        for (let j = 0; j < piles.length; j++) {
+            maxH += Math.ceil(h / i);
+        }
+        if (maxH <= h) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+function maxSubarraySumk(arr = [], k) {
+    let maxSum = 0;
+    let sum = 0;
+    for (let i = 0; i < k; i++) sum += arr[i];
+    maxSum = sum;
+    for (let j = k; j < arr.length; j++) {
+        sum = sum - arr[j - k] + arr[j];
+        maxSum = Math.max(maxSum, sum);
+    }
+
+    return maxSum;
+}
+
+function minLen(arr = [], target) {
+    let min = Infinity;
+    for (let i = 0; i < arr.length; i++) {
+        let sum = 0;
+        for (let j = i; j < arr.length; j++) {
+            sum += arr[j];
+            if (sum >= target) {
+                min = Math.min(min, j - i + 1);
+                break;
+            }
+        }
+    }
+    return min;
+}
+
+function minLenBest(arr = [], target) {
+    let left = 0;
+    let min = Infinity;
+    let sum = 0;
+    for (let right = 0; right < arr.length; right++) {
+        //o(n)
+        sum += arr[right];
+        while (sum >= target) {
+            //valid window
+            min = Math.min(min, right - left + 1);
+            //try more smallest length
+            sum -= arr[left];
+            left++;
+        }
+    }
+    return min;
+}
+
+function minDays(blumday = [], m, k) {
+    if (m * k > blumday.length) return -1;
+    let n = blumday.length;
+    let maxDay = Math.max(...blumday);
+    for (let day = 1; day <= maxDay; day++) {
+        let flowers = 0;
+        let bouquets = 0;
+        for (let i = 0; i < n; i++) {
+            if (blumday[i] <= day) {
+                flowers++;
+                if (flowers == k) {
+                    bouquets++;
+                    flowers = 0;
+                }
+            } else {
+                flowers = 0;
+            }
+        }
+        if (bouquets >= m) {
+            return day;
+        }
+    }
+    return -1;
+}
+
+function minDaysBest(blumday = [], m, k) {
+    let n = blumday.length;
+    if (m * k > n) return -1;
+    let minDay = Math.min(...blumday);
+    let maxDay = Math.max(...blumday);
+    let ans = -1;
+
+    while (minDay <= maxDay) {
+        let midDay = Math.floor(minDay + (maxDay - minDay) / 2);
+        if (isPossible(blumday, midDay, m, k)) {
+            ans = midDay;
+            maxDay = midDay - 1;
+        } else {
+            minDay = midDay + 1;
+        }
+    }
+    return ans;
+}
+function isPossible(arr = [], day, m, k) {
+    let flowers = 0;
+    let bouquets = 0;
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i] <= day) {
+            flowers++;
+            if (flowers == k) {
+                bouquets++;
+                flowers = 0;
+            }
+        } else {
+            flowers = 0;
+        }
+    }
+    return bouquets >= m;
+}
+console.log(minDaysBest([1, 10, 3, 10, 2, 6], 3, 2));
