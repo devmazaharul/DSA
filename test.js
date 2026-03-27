@@ -1111,6 +1111,7 @@ function isPossible(arr = [], day, m, k) {
             flowers++;
             if (flowers == k) {
                 bouquets++;
+                if (bouquets > m) return true;
                 flowers = 0;
             }
         } else {
@@ -1119,4 +1120,362 @@ function isPossible(arr = [], day, m, k) {
     }
     return bouquets >= m;
 }
-console.log(minDaysBest([1, 10, 3, 10, 2, 6], 3, 2));
+
+function minBananaEatingSpeed(arr = [], h) {
+    let low = 1;
+    let high = Math.max(...arr);
+    while (low <= high) {
+        let mid = Math.floor(low + (high - low) / 2);
+        let hour = 0;
+        for (let val of arr) {
+            hour += Math.ceil(val / mid);
+        }
+        if (hour <= h) high = mid - 1;
+        else {
+            low = mid + 1;
+        }
+    }
+    return low;
+}
+
+function minimimDays(arr = [], m, k) {
+    let n = arr.length;
+    if (m * k > n) return -1;
+    let low = Infinity;
+    let high = -Infinity;
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i] < low) low = arr[i];
+        if (arr[i] > high) high = arr[i];
+    }
+
+    while (low < high) {
+        let midDay = Math.floor(low + (high - low) / 2);
+        let flowers = 0;
+        let tora = 0;
+        for (let i = 0; i < arr.length; i++) {
+            if (arr[i] <= midDay) {
+                flowers++;
+                if (flowers == k) {
+                    tora++;
+                    if (tora == m) break;
+                    flowers = 0;
+                }
+            } else {
+                flowers = 0;
+            }
+        }
+
+        if (tora >= m) {
+            high = midDay;
+        } else {
+            low = midDay + 1;
+        }
+    }
+
+    return low;
+}
+
+function isPossible(arr, day, m, k) {
+    let flowers = 0;
+    let tora = 0;
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i] <= day) {
+            flowers++;
+            if (flowers == k) {
+                tora++;
+                if (tora == m) return true;
+                flowers = 0;
+            }
+        } else {
+            flowers = 0;
+        }
+    }
+    return false;
+}
+
+function SmallestDivisor(arr, limit) {
+    let minDiv = Infinity;
+    let max = Math.max(...arr);
+    for (let i = 1; i <= max; i++) {
+        let divisorCount = 0;
+        for (let j = 0; j < arr.length; j++) {
+            divisorCount += Math.ceil(arr[j] / i);
+            if (divisorCount > limit) break;
+        }
+        if (divisorCount <= limit) {
+            minDiv = Math.min(minDiv, i);
+        }
+    }
+    return minDiv;
+}
+
+function totalDayFun(arr, cap) {
+    let day = 1;
+    let weight = 0;
+    for (let val of arr) {
+        if (weight + val > cap) {
+            day++;
+            weight = val;
+        } else {
+            weight += val;
+        }
+    }
+    return day;
+}
+
+function shipPackage(arr, limit) {
+    let low = Math.max(...arr);
+    let high = arr.reduce((acc, curr) => acc + curr, 0);
+    while (low <= high) {
+        let mid = Math.floor(low + (high - low) / 2);
+        const totalDay = totalDayFun(arr, mid);
+        if (totalDay <= limit) {
+            high = mid - 1;
+        } else {
+            low = mid + 1;
+        }
+    }
+    return low;
+}
+
+function minDivisor(arr, limit) {
+    let low = 1;
+    let high = Math.max(...arr);
+    while (low <= high) {
+        let mid = Math.floor(low + (high - low) / 2);
+        let divisor = 0;
+        for (let i = 0; i < arr.length; i++) {
+            divisor += Math.ceil(arr[i] / mid);
+            if (divisor > limit) break;
+        }
+
+        if (divisor <= limit) {
+            high = mid - 1;
+        } else {
+            low = mid + 1;
+        }
+    }
+    return low;
+}
+
+function shipPackageBest(weights, dayes) {
+    let low = -Infinity;
+    let high = 0;
+    for (let i = 0; i < weights.length; i++) {
+        if (weights[i] > low) low = weights[i];
+        high += weights[i];
+    }
+
+    while (low <= high) {
+        let cap = Math.floor(low + (high - low) / 2);
+        let day = 1;
+        let weight = 0;
+
+        for (let j = 0; j < weights.length; j++) {
+            if (weight + weights[j] > cap) {
+                day++;
+                weight = weights[j];
+                if (day > dayes) break;
+            } else {
+                weight += weights[j];
+            }
+        }
+
+        if (day <= dayes) {
+            high = cap - 1;
+        } else {
+            low = cap + 1;
+        }
+    }
+    return low;
+}
+
+function kthMissingNumber(arr, k) {
+    let left = 0;
+    let right = arr.length;
+    while (left < right) {
+        let mid = Math.floor(left + (right - left) / 2);
+        if (arr[mid] - mid - 1 < k) {
+            left = mid + 1;
+        } else {
+            right = mid;
+        }
+    }
+
+    return left + k;
+}
+
+function aggresiveCow(arr, cows) {
+    arr.sort((a, b) => a - b);
+    let left = 1;
+    let right = arr[arr.length - 1] - arr[0];
+    let ans = 0;
+    while (left <= right) {
+        let mid = Math.floor(left + (right - left) / 2);
+        if (calPlace(arr, cows, mid)) {
+            ans = mid;
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
+    }
+    return ans;
+}
+
+function calPlace(arr, cow, distance) {
+    let cowcount = 1;
+    let lastPos = arr[0];
+    for (let i = 1; i < arr.length; i++) {
+        if (arr[i] - lastPos >= distance) {
+            cowcount++;
+            lastPos = arr[i];
+        }
+        if (cow === cowcount) return true;
+    }
+    return false;
+}
+
+function bookAlocation(books, m) {
+    if (m > books.length) return -1;
+    let low = 0;
+    let high = 0;
+    for (let i = 0; i < books.length; i++) {
+        if (books[i] > low) low = books[i];
+        high += books[i];
+    }
+
+    let ans = -1;
+    while (low <= high) {
+        let page = Math.floor(low + (high - low) / 2);
+        if (canAllocate(books, m, page)) {
+            ans = page;
+            high = page - 1;
+        } else {
+            low = page + 1;
+        }
+    }
+    return ans;
+}
+
+function canAllocate(books, m, limit) {
+    let studentCount = 1;
+    let totalPage = 0;
+    for (let i = 0; i < books.length; i++) {
+        if (books[i] + totalPage > limit) {
+            studentCount++;
+            totalPage = books[i];
+            if (studentCount > m) return false;
+        } else {
+            totalPage += books[i];
+        }
+    }
+    return true;
+}
+
+function SmallestDivisorII(arr, m) {}
+
+function mDay(days, m, k) {
+    for (let i = 0; i < days.length; i++) {
+        let fl = 0;
+        let mm = 0;
+        for (let j = 0; j < days.length; j++) {
+            let daysDiv = days[j];
+            if (daysDiv <= days[i]) {
+                fl++;
+                if (fl == k) {
+                    mm++;
+                    if (mm > m) break;
+                    fl = 0;
+                }
+            } else {
+                fl = 0;
+            }
+            if (mm >= m) {
+                return days[i];
+            }
+        }
+    }
+    return -1;
+}
+
+function findSmallestMaxDist(stations, k) {
+    let n = stations.length;
+    let low = 0;
+    let high = 0;
+    for (let i = 0; i < n - 1; i++) {
+        high = Math.max(high, stations[i + 1] - stations[i]);
+    }
+
+    while (high - low > 1e-6) {
+        let mid = (low + high) / 2.0;
+        let totalStation = numberOfGasStationsRequired(stations, mid);
+        if (totalStation > k) {
+            low = mid;
+        } else {
+            high = mid;
+        }
+    }
+    return low;
+}
+
+function numberOfGasStationsRequired(stations, dist) {
+    let station = 0;
+    for (let i = 1; i < stations.length; i++) {
+        let gap = stations[i] - stations[i - 1];
+        let numberOfStation = Math.floor(gap / dist);
+        if (numberOfStation === gap / dist) {
+            station += numberOfStation - 1;
+        } else {
+            station += numberOfStation;
+        }
+    }
+    return station;
+}
+
+function medianSortdArray(arr1, arr2) {
+    let n = arr1.length;
+    let m = arr2.length;
+    let mergeArrr = [];
+    let i = 0;
+    let j = 0;
+
+    while (i < n && j < m) {
+        if (arr1[i] < arr2[j]) {
+            mergeArrr.push(arr1[i++]);
+        } else {
+            mergeArrr.push(arr2[j++]);
+        }
+    }
+
+    // arr1 এর বাকি element
+    while (i < n) {
+        mergeArrr.push(arr1[i++]);
+    }
+
+    // arr2 এর বাকি element
+    while (j < m) {
+        mergeArrr.push(arr2[j++]);
+    }
+    let midianEle = Math.floor(mergeArrr.length / 2);
+    return mergeArrr[midianEle];
+}
+let arr1 = [1, 2, 3, 4];
+let arr2 = [6, 7, 9, 1, 2, 3, 3, 6, 9];
+
+const arp = [1, 2, 3, 3, 3, 7];
+function lastOcc(arr, target) {
+    let left = 0;
+    let right = arr.length - 1;
+    while (left < right) {
+        let mid = Math.floor(left + (right - left) / 2);
+        if (arr[mid] > target) {
+            right=mid
+        } else {
+            left = mid + 1;
+        }
+    }
+    return left-1
+}
+
+
+

@@ -292,6 +292,8 @@ var sortArray = function (nums) {
     const pivotIdx = pivotIndex(nums);
 };
 
+
+
 function merge(nums, start, mid, end) {
     let i = start;
     let j = mid + 1;
@@ -329,7 +331,8 @@ function maxSubaraysumofk(arr, k) {
     return maxSum;
 }
 
-function removeDuplicate(arr) {
+
+function removeDuplicateandreturnNewLen(arr) {
     let slow = 0;
     for (let fast = 1; fast < arr.length; fast++) {
         if (arr[slow] !== arr[fast]) {
@@ -337,7 +340,7 @@ function removeDuplicate(arr) {
             arr[slow] = arr[fast];
         }
     }
-    return arr.slice(0, slow + 1);
+    return slow
 }
 
 function subarraySumEtraget(arr, target) {
@@ -346,7 +349,7 @@ function subarraySumEtraget(arr, target) {
         let current = 0;
         for (let j = i; j < arr.length - 1; j++) {
             current += arr[j];
-            if (current <= target) {
+            if (current <= target) {//valid
                 maxLen = Math.max(maxLen, j - i + 1);
             }
         }
@@ -619,21 +622,21 @@ function twoSumbBruteForce(arr, target) {
     }
 }
 
-function twoSumbOptimal(arr, target) {
+function twoSumbOptimal(arr, target) { //for unsorted
     let map = {};
-    let top = 0;
+
     for (let i = 0; i < arr.length; i++) {
-        top += 1;
+     
         const need = target - arr[i];
 
         if (map[need] !== undefined) {
-            console.log(top + ' total oparatio');
+        
             return [i, map[need]];
         }
         map[arr[i]] = i;
     }
 }
-function twoSumbOptimalSored(arr, target) {
+function twoSumbOptimalSored(arr, target) { //for sorted
     let top = 0;
     let left = 0,
         right = arr.length - 1;
@@ -809,4 +812,5 @@ function longestSubstringReplaceSlide(str = '', k) {
     }
     return maxlen
 }
-console.log(longestSubstringReplaceSlide('aababb'));
+
+
